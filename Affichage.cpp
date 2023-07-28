@@ -45,7 +45,7 @@ void AffichePlateau( Plateau* plateau )
 		printf( " %2d |", l+1 );
 		for( int c = 0; c < plateau->colonnes; c++ )
 		{
-			Case* pion = &plateau->matrice[(c * plateau->colonnes) + l];
+			Case* pion = &plateau->matrice[(l * plateau->colonnes) + c];
 
 			printf( " " );
 
