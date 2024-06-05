@@ -2,6 +2,8 @@
 #include "Affichage.h"
 
 #include <stdio.h>
+#include <stdarg.h>
+#include <process.h>
 
 //
 // Efface l'écran
@@ -57,7 +59,7 @@ void AffichePlateau( Plateau* plateau )
 
 			switch( pion->type )
 			{
-				case EMPTY: printf( "   " ); break;
+//				case EMPTY: printf( "   " ); break;
 
 				// fg color; bold; reset
 				case JAUNE: printf( "\033[33;1m J \033[0m" ); break;
@@ -94,8 +96,30 @@ void AffichePlateau( Plateau* plateau )
 	printf( "Coups restants: %d\n", plateau->coups );
 }
 
-void AfficheError( const char* error )
+void AfficheAvertissement(const char* error, ...)
 {
-	printf( "ERROR: %s\n", error );
+	printf("\033[33;1mWARNING: \033[0m");
+	printf("WARNING: ");
+
+	va_list errorArgs;
+	va_start(errorArgs, error);
+	vprintf(error, errorArgs);
+	va_end(errorArgs);
+
+	printf("\n");
+}
+
+void AfficheErreur( const char* error, ... )
+{
+	printf("\033[31;1mERROR: \033[0m");
+
+	va_list errorArgs;
+	va_start(errorArgs, error);
+	vprintf( error, errorArgs );
+	va_end(errorArgs);
+
+	printf("\n");
+
+	exit(-1);
 }
 

@@ -18,7 +18,7 @@ int InitializeQueue( ActionQueue* queue, size_t size )
 	queue->Actions = (Action**) malloc( size * sizeof( Action* ) );
 	if( queue->Actions == nullptr )
 	{
-		AfficheError( "Allocation mémoire pour le tableau d'actions de la queue" );
+		AfficheErreur( "Allocation mémoire pour le tableau d'actions de la queue" );
 
 		return -1;
 	}
@@ -42,7 +42,7 @@ int AddToQueue( ActionQueue* queue, Action* action )
 {
 	if( QueuePleine( queue ) )
 	{
-		AfficheError( "La queue est pleine" );
+		AfficheErreur( "La queue est pleine" );
 		return -1;
 	}
 
@@ -66,7 +66,7 @@ Action* GetFromQueue( ActionQueue* queue )
 {
 	if( QueueVide( queue ) )
 	{
-		AfficheError( "La queue est vide" );
+		AfficheErreur( "La queue est vide" );
 		return nullptr;
 	}
 
@@ -95,7 +95,7 @@ Action* CreeActionInitialize()
 	Action* action = (Action*) malloc( sizeof( Action ) );
 	if( action == nullptr )
 	{
-		AfficheError( "Allocation d'une action INITIALIZE" );
+		AfficheErreur( "Allocation d'une action INITIALIZE" );
 		return nullptr;
 	}
 
@@ -109,7 +109,7 @@ Action* CreeActionAffichage()
 	Action* action = (Action*)malloc( sizeof( Action ) );
 	if( action == nullptr )
 	{
-		AfficheError( "Allocation d'une action AFFICHAGE" );
+		AfficheErreur( "Allocation d'une action AFFICHAGE" );
 		return nullptr;
 	}
 
@@ -123,7 +123,7 @@ Action* CreeActionDeplacement( int X1, int Y1, int X2, int Y2 )
 	Action* action = (Action*)malloc( sizeof( Action ) );
 	if( action == nullptr )
 	{
-		AfficheError( "Allocation d'une action DEPALCEMENT" );
+		AfficheErreur( "Allocation d'une action DEPALCEMENT" );
 		return nullptr;
 	}
 
@@ -142,7 +142,7 @@ Action* CreeActionCalcul()
 	Action* action = (Action*) malloc( sizeof( Action ) );
 	if( action == nullptr )
 	{
-		AfficheError( "Allocation d'une action CALCUL" );
+		AfficheErreur( "Allocation d'une action CALCUL" );
 		return nullptr;
 	}
 
@@ -156,7 +156,7 @@ Action* CreeActionLecture()
 	Action* action = (Action*)malloc( sizeof( Action ) );
 	if( action == nullptr )
 	{
-		AfficheError( "Allocation d'une action LECTURE" );
+		AfficheErreur( "Allocation d'une action LECTURE" );
 		return nullptr;
 	}
 

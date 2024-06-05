@@ -1,42 +1,57 @@
 
 #include "Matrice.h"
 
+#include <Windows.h>
 #include <stdlib.h>
 #include <malloc.h>
 
-static PrototypePlateau prototypes[]
+static ParametresNiveau* niveaux;
+static int niveauMax;
+
+void InitializeJeu(ParametresNiveau* _prototypesNiveau, int _niveauMax)
 {
-	//	colonnes	lignes	coups	jellies
-	{	20,			20,		40,		10 },
-	{	20,			20,		35,		15 },
-	{	20,			20,		30,		20 },
-};
+	niveaux = _prototypesNiveau;
+	niveauMax = _niveauMax;
+
+	// pour éviter que rand() ne donne toujours les mêmes valeurs.
+	srand((unsigned int)GetTickCount64());
+}
 
 int InitializePlateau( Plateau* plateau, int niveau )
 {
-	if( (niveau < 1) || (niveau > ( sizeof( prototypes ) / sizeof( PrototypePlateau ) )) )
+	if( (niveau < 1) || (niveau > niveauMax) )
 	{
 		return -1;
 	}
 
+	if (niveau > 1)
+	{
+		free(plateau->matrice);
+	}
+
 	plateau->niveau = niveau;
-	plateau->colonnes = prototypes[niveau-1].colonnes;
-	plateau->lignes = prototypes[niveau - 1].lignes;
-	plateau->coups = prototypes[niveau - 1].coups;
+	plateau->colonnes = niveaux[niveau - 1].colonnes;
+	plateau->lignes = niveaux[niveau - 1].lignes;
+	plateau->coups = niveaux[niveau - 1].coups;
+	plateau->jellies = niveaux[niveau - 1].jellies;
 
 	plateau->matrice = (Case*)malloc( plateau->colonnes * plateau->lignes * sizeof( Case ) );
+	if (!plateau->matrice)
+	{
+		return -1;
+	}
 
 	for( int l = 0; l < plateau->lignes; l++ )
 	{
 		for( int c = 0; c < plateau->colonnes; c++ )
 		{
-//			plateau->matrice[(l * plateau->colonnes) + c].type = EMPTY;
-			plateau->matrice[(l * plateau->colonnes) + c].type = (enum TypePion) ((rand() % 5) + 1);
+			plateau->matrice[(l * plateau->colonnes) + c].type = (enum TypePion) ((rand() % NB_TYPE_PION));
 			plateau->matrice[(l * plateau->colonnes) + c].jelly = false;
+			plateau->matrice[(l * plateau->colonnes) + c].vide = false;
 		}
 	}
 
-	for( int j = 0; j < prototypes[niveau - 1].jellies; j++ )
+	for( int j = 0; j < plateau->jellies; j++ )
 	{
 		int x;
 		int y;
@@ -52,4 +67,22 @@ int InitializePlateau( Plateau* plateau, int niveau )
 	} 
 
 	return 0;
+}
+
+bool VerifieGelatine(Plateau* plateau)
+{
+	return plateau->jellies > 0;
+}
+
+bool VerifieEchange(int X1, int Y1, int X2, int Y2)
+{
+	return false;
+}
+
+void SuppressionV(int X1, int Y1, int X2, int Y2)
+{
+}
+
+void SuppressionH(int X1, int Y1, int X2, int Y2)
+{
 }

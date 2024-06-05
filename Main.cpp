@@ -2,13 +2,28 @@
 #include "Queue.h"
 #include "Matrice.h"
 #include "Affichage.h"
+#include "Utils..h"
 
 #include <Windows.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <malloc.h>
 
-bool MaximizeConsole( void );
+// ****************************************************************************
+// * Configuration ************************************************************
+// ****************************************************************************
+
+static ParametresNiveau niveaux[]
+{
+	//	colonnes	lignes	coups	jellies
+	{	20,			20,		40,		10 },
+	{	20,			20,		35,		15 },
+	{	20,			20,		30,		20 },
+};
+
+// ****************************************************************************
+// * Point d'entrée ***********************************************************
+// ****************************************************************************
 
 int main()
 {
@@ -16,35 +31,29 @@ int main()
 	Plateau plateau;
 	int niveau = 1;
 
-	// pour éviter que rand() ne donne toujours les mêmes valeurs.
-	srand( (unsigned int)GetTickCount64() );
+	// --- Console en plein écran (simule Alt-Enter) --------------------------
 
-	// Console plein ecran (merci Laurent)
 	MaximizeConsole();
+	
+	// --- Initialisation -----------------------------------------------------
 
-	for( int i = 0; i < 3; i++ )
-	{
-		InitializePlateau( &plateau, niveau++ );
-		AffichePlateau( &plateau );
-		getchar();
-	}
-
-	return 0;
+	InitializeJeu(niveaux, (sizeof(niveaux) / sizeof(ParametresNiveau)));
 
 	InitializeQueue( &queue );
-
 	AddToQueue( &queue, CreeActionInitialize() );
+
+	// --- Boucle de jeu -------------------------------------------------------
 
 	Action* action;
 	while( (action = GetFromQueue( &queue )) != nullptr )
 	{
 		switch( action->Type )
 		{
-			case INITIALIZATION:
+			case INITIALIZATION:	// -----------------------------------------
 			{
 				if( InitializePlateau( &plateau, niveau ) != 0 )
 				{
-					AfficheError( "Failed to create level" );
+					AfficheErreur( "Failed to create level" );
 					break;
 				}
 
@@ -54,7 +63,7 @@ int main()
 				break;
 			}
 
-			case AFFICHAGE:
+			case AFFICHAGE:	// -------------------------------------------------
 			{
 				AffichePlateau( &plateau );
 
@@ -63,14 +72,19 @@ int main()
 				break;
 			}
 
-			case LECTURE:
+			case LECTURE:	// -------------------------------------------------
 			{
 				AddToQueue( &queue, CreeActionDeplacement( 0, 0, 0, 0 ) );
 
 				break;
 			}
 
-			case FIN_NIVEAU:
+			case DEPLACEMENT:	// ---------------------------------------------
+			{
+				break;
+			}
+
+			case FIN_NIVEAU:	// ---------------------------------------------
 			{
 				if( ++niveau <= 3 )
 				{
@@ -80,11 +94,28 @@ int main()
 				break;
 			}
 
-			case CALCUL:
+			case CALCUL:	// -------------------------------------------------
 			{
 				AddToQueue( &queue, CreeActionLecture() );
 
 				break;
+			}
+
+			case SUPRESSION_V:	// ---------------------------------------------
+			{
+				break;
+			}
+
+			case SUPRESSION_H:	// ---------------------------------------------
+			{
+				break;
+			}
+
+			default:	// -----------------------------------------------------
+			{
+				// Ne devrait normalement jamais arriver...
+
+				AfficheErreur("Action de type %d non reconnue", action->Type);
 			}
 		}
 

@@ -137,6 +137,7 @@
     <ClInclude Include="Affichage.h" />
     <ClInclude Include="Matrice.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="Utils..h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
