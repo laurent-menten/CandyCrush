@@ -32,5 +32,5 @@ bool MaximizeConsole( void )
 	// Delay to make sure console has maximized
 	Sleep( 500 );
 
-	return false;
+	return true;
 }
