@@ -4,7 +4,6 @@
 
 void EffaceEcran();
 
-void AffichePlateau( Plateau* plateau );
-
+void AffichePlateau( Plateau* plateau, bool avecInfos = true );
 void AfficheAvertissement(const char* error, ...);
 void AfficheErreur( const char* error, ... );

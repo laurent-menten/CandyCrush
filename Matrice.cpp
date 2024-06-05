@@ -8,7 +8,7 @@
 static ParametresNiveau* niveaux;
 static int niveauMax;
 
-void InitializeJeu(ParametresNiveau* _prototypesNiveau, int _niveauMax)
+void InitialiseJeu(ParametresNiveau* _prototypesNiveau, int _niveauMax)
 {
 	niveaux = _prototypesNiveau;
 	niveauMax = _niveauMax;
@@ -17,7 +17,7 @@ void InitializeJeu(ParametresNiveau* _prototypesNiveau, int _niveauMax)
 	srand((unsigned int)GetTickCount64());
 }
 
-int InitializePlateau( Plateau* plateau, int niveau )
+int InitialisePlateau( Plateau* plateau, int niveau )
 {
 	if( (niveau < 1) || (niveau > niveauMax) )
 	{
@@ -69,20 +69,41 @@ int InitializePlateau( Plateau* plateau, int niveau )
 	return 0;
 }
 
-bool VerifieGelatine(Plateau* plateau)
+bool VerifieCoordonnees(Plateau* plateau, int x, int y)
+{
+	return true;
+}
+
+bool VerifieCoups(Plateau* plateau)
+{
+	return plateau->coups > 0;
+}
+
+bool VerifieJellies(Plateau* plateau)
 {
 	return plateau->jellies > 0;
 }
 
-bool VerifieEchange(int X1, int Y1, int X2, int Y2)
+bool VerifieEchange( Plateau* plateau, int x1, int y1, int x2, int y2 )
 {
-	return false;
+	int x = abs(x1 - x2);
+	int y = abs(y1 - y2);
+
+	return ((x == 0) && (y == 1)) || ((x == 1) && (y == 0));
 }
 
-void SuppressionV(int X1, int Y1, int X2, int Y2)
+void SuppressionV(Plateau* plateau, int collone, int ligneDebut, int ligneFin)
 {
 }
 
-void SuppressionH(int X1, int Y1, int X2, int Y2)
+void SuppressionH(Plateau* plateau, int ligne, int colonneDebut, int colonneFin)
+{
+}
+
+void SuppressionColonne(Plateau* plateau, int colonne)
+{
+}
+
+void SuppressionLigne(Plateau* plateau, int ligne)
 {
 }

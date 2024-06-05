@@ -2,7 +2,8 @@
 #include "Queue.h"
 #include "Matrice.h"
 #include "Affichage.h"
-#include "Utils..h"
+#include "Lecture.h"
+#include "Utils.h"
 
 #include <Windows.h>
 #include <stdlib.h>
@@ -37,7 +38,7 @@ int main()
 	
 	// --- Initialisation -----------------------------------------------------
 
-	InitializeJeu(niveaux, (sizeof(niveaux) / sizeof(ParametresNiveau)));
+	InitialiseJeu(niveaux, (sizeof(niveaux) / sizeof(ParametresNiveau)));
 
 	InitializeQueue( &queue );
 	AddToQueue( &queue, CreeActionInitialize() );
@@ -45,15 +46,18 @@ int main()
 	// --- Boucle de jeu -------------------------------------------------------
 
 	Action* action;
-	while( (action = GetFromQueue( &queue )) != nullptr )
+
+	bool finJeu = false;
+
+	while( !finJeu && ((action = GetFromQueue( &queue )) != nullptr) )
 	{
-		switch( action->Type )
+		switch( action->type )
 		{
 			case INITIALIZATION:	// -----------------------------------------
 			{
-				if( InitializePlateau( &plateau, niveau ) != 0 )
+				if( InitialisePlateau( &plateau, niveau ) != 0 )
 				{
-					AfficheErreur( "Failed to create level" );
+					AfficheErreur( "Erreur de création du niveau %d", niveau ); // noreturn !
 					break;
 				}
 
@@ -74,22 +78,49 @@ int main()
 
 			case LECTURE:	// -------------------------------------------------
 			{
-				AddToQueue( &queue, CreeActionDeplacement( 0, 0, 0, 0 ) );
+				int x1;
+				int y1;
+				bool origineValide = false;
+
+				int x2;
+				int y2;
+				bool destinationValide = false;
+
+				do 
+				{
+					AffichePlateau(&plateau);
+
+					if (origineValide)
+					{
+						// affiche origine
+					}
+					else
+					{
+						LectureCoordonnees( "Origine [x y]: ", &x1, &y1);
+						origineValide = VerifieCoordonnees(&plateau, x1, y1);
+					}
+
+					if ( !destinationValide )
+					{
+						LectureCoordonnees( "Destination [x y]: ", &x2, &y2);
+						destinationValide = VerifieCoordonnees(&plateau, x2, y2);
+					}
+
+					if (! VerifieEchange(&plateau, x1, y1, x2, y2))
+					{
+						origineValide = destinationValide = false;
+					}
+
+				} while ( !(origineValide && destinationValide) );
+
+				AddToQueue( &queue, CreeActionDeplacement( x1, y1, x2, y2 ) );
 
 				break;
 			}
 
 			case DEPLACEMENT:	// ---------------------------------------------
 			{
-				break;
-			}
-
-			case FIN_NIVEAU:	// ---------------------------------------------
-			{
-				if( ++niveau <= 3 )
-				{
-					AddToQueue( &queue, CreeActionInitialize() );
-				}
+				ActionDeplacement* actionDeplacement = (ActionDeplacement*)action;
 
 				break;
 			}
@@ -101,13 +132,52 @@ int main()
 				break;
 			}
 
+			case VERIFICATION:	// ---------------------------------------------
+			{
+				break;
+			}
+
 			case SUPRESSION_V:	// ---------------------------------------------
 			{
+				ActionSupressionV* actionSupression = (ActionSupressionV*)action;
+
+				SuppressionV( &plateau, actionSupression->index, actionSupression->debut, actionSupression->fin );
+
 				break;
 			}
 
 			case SUPRESSION_H:	// ---------------------------------------------
 			{
+				ActionSupressionH* actionSupression = (ActionSupressionH*)action;
+
+				SuppressionH( &plateau, actionSupression->index, actionSupression->debut, actionSupression->fin );
+
+				break;
+			}
+
+			case SUPRESSION_COLONNE:
+			{
+				ActionSupressionColonne* actionSupression = (ActionSupressionColonne*)action;
+				break;
+			}
+
+			case SUPRESSION_LIGNE:
+			{
+				ActionSupressionLigne* actionSupression = (ActionSupressionLigne*)action;
+				break;
+			}
+
+			case FIN_NIVEAU:	// ---------------------------------------------
+			{
+				if (++niveau <= 3)
+				{
+					AddToQueue(&queue, CreeActionInitialize());
+				}
+				else
+				{
+					finJeu = true;
+				}
+
 				break;
 			}
 
@@ -115,10 +185,14 @@ int main()
 			{
 				// Ne devrait normalement jamais arriver...
 
-				AfficheErreur("Action de type %d non reconnue", action->Type);
+				AfficheErreur("Action de type %d non gérée", action->type);
 			}
 		}
 
 		free( action );
 	}
+
+	FinaliseQueue(&queue);
+
+	return 0;
 }

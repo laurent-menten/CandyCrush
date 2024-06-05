@@ -19,7 +19,7 @@ void EffaceEcran()
 	printf( "\033[J" );
 }
 
-void AffichePlateau( Plateau* plateau )
+void AffichePlateau( Plateau* plateau, bool avecInfos )
 {
 	EffaceEcran();
 
@@ -51,28 +51,34 @@ void AffichePlateau( Plateau* plateau )
 
 			printf( " " );
 
-			if( pion->jelly )
+			if (pion->vide)
 			{
-				// bg color
-				printf( "\033[47m" );
+				printf( "   " );
 			}
-
-			switch( pion->type )
+			else
 			{
-//				case EMPTY: printf( "   " ); break;
+				if (pion->jelly)
+				{
+					// bg color
+					printf("\033[47m");
+				}
 
-				// fg color; bold; reset
-				case JAUNE: printf( "\033[33;1m J \033[0m" ); break;
-				case VERT:  printf( "\033[32;1m V \033[0m" ); break;
-				case BLEU:  printf( "\033[34;1m B \033[0m" ); break;
-				case ROUGE: printf( "\033[31;1m R \033[0m" ); break;
-				case MAUVE: printf( "\033[35;1m M \033[0m" ); break;
-			}
+				switch (pion->type)
+				{
 
-			if( pion->jelly )
-			{
-				// bg color
-				printf( "\033[40m" );
+					// fg color; bold; reset
+					case JAUNE: printf("\033[33;1m J \033[0m"); break;
+					case VERT:  printf("\033[32;1m V \033[0m"); break;
+					case BLEU:  printf("\033[34;1m B \033[0m"); break;
+					case ROUGE: printf("\033[31;1m R \033[0m"); break;
+					case MAUVE: printf("\033[35;1m M \033[0m"); break;
+				}
+
+				if (pion->jelly)
+				{
+					// bg color
+					printf("\033[40m");
+				}
 			}
 
 			printf( " |" );
@@ -90,10 +96,13 @@ void AffichePlateau( Plateau* plateau )
 	}
 	printf( "\n" );
 
-	// Affiche le nombre de coups restants
+	if (avecInfos)
+	{
+		// Affiche le nombre de coups restants
 
-	printf( "Niveau: %d\n", plateau->niveau );
-	printf( "Coups restants: %d\n", plateau->coups );
+		printf("Niveau: %d\n", plateau->niveau);
+		printf("Coups restants: %d\n", plateau->coups);
+	}
 }
 
 void AfficheAvertissement(const char* error, ...)

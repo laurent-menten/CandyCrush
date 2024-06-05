@@ -41,24 +41,28 @@ typedef struct ParametresNiveau
 
 typedef struct Plateau
 {
-	int niveau;
-	int colonnes;
-	int lignes;
-	int coups;
-	int jellies;
+	int niveau;			// niveau de jeu
+	int colonnes;		// nombre de colonnes
+	int lignes;			// nombre de lignes
+	int coups;			// nombre de coups restants
+	int jellies;		// nombre de jellies restantes
 
-	Case* matrice;
+	Case* matrice;		// plateau de jeu
 } Plateau;
 
-void InitializeJeu(ParametresNiveau* niveaux, int niveauMax);
-int InitializePlateau( Plateau* plateau, int niveau );
+void InitialiseJeu(ParametresNiveau* niveaux, int niveauMax);
+int InitialisePlateau( Plateau* plateau, int niveau );
+
+bool VerifieCoordonnees(Plateau* plateau, int x, int y);
+bool VerifieEchange(Plateau* plateau, int x1, int y1, int x2, int y2);
 
 // Verifie la présence de gélatine sur le plateau
 // true si gélatines présentes, false sinon. 
-bool VerifieGelatine(Plateau* plateau);
-
-bool VerifieEchange(int X1, int Y1, int X2, int Y2);
+bool VerifieJellies(Plateau* plateau);
 
 
-void SuppressionV( int X1, int Y1, int X2, int Y2 );
-void SuppressionH( int X1, int Y1, int X2, int Y2 );
+void SuppressionV(Plateau* plateau, int collone, int ligneDebut, int ligneFin );
+void SuppressionH(Plateau* plateau, int ligne, int colnoneDebut, int colonneFin );
+
+void SuppressionColonne(Plateau* plateau, int colonne);
+void SuppressionLigne(Plateau* plateau, int ligne);

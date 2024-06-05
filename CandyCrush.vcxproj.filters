@@ -30,6 +30,9 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Lecture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Queue.h">
@@ -41,7 +44,10 @@
     <ClInclude Include="Affichage.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utils..h">
+    <ClInclude Include="Utils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lecture.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
