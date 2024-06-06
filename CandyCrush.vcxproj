@@ -127,16 +127,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Action.cpp" />
     <ClCompile Include="Affichage.cpp" />
     <ClCompile Include="Lecture.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Matrice.cpp" />
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Action.h" />
     <ClInclude Include="Affichage.h" />
     <ClInclude Include="Lecture.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="Matrice.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Utils.h" />

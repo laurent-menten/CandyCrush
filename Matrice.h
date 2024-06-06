@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Action.h"
+
 #define TAILLE_PLATEAU_COLONNES 20
 #define TAILLE_PLATEAU_LIGNES 20
 #define NB_COUPS 20;
@@ -53,16 +55,16 @@ typedef struct Plateau
 void InitialiseJeu(ParametresNiveau* niveaux, int niveauMax);
 int InitialisePlateau( Plateau* plateau, int niveau );
 
+bool Verifie(Plateau* plateau);
 bool VerifieCoordonnees(Plateau* plateau, int x, int y);
-bool VerifieEchange(Plateau* plateau, int x1, int y1, int x2, int y2);
-
-// Verifie la présence de gélatine sur le plateau
-// true si gélatines présentes, false sinon. 
+bool VerifieDeplacement(Plateau* plateau, int x1, int y1, int x2, int y2);
+bool VerifieCoups(Plateau* plateau);
 bool VerifieJellies(Plateau* plateau);
 
+Action* Calcul(Plateau* plateau);
+void Deplacement(Plateau* plateau, int x1, int y1, int x2, int y2);
 
-void SuppressionV(Plateau* plateau, int collone, int ligneDebut, int ligneFin );
-void SuppressionH(Plateau* plateau, int ligne, int colnoneDebut, int colonneFin );
-
+void SuppressionVerticale(Plateau* plateau, int collone, int ligneDebut, int ligneFin );
+void SuppressionHorizontale(Plateau* plateau, int ligne, int colnoneDebut, int colonneFin );
 void SuppressionColonne(Plateau* plateau, int colonne);
 void SuppressionLigne(Plateau* plateau, int ligne);

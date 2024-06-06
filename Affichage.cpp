@@ -19,6 +19,12 @@ void EffaceEcran()
 	printf( "\033[J" );
 }
 
+/*
+* Fonction d’affichage qui reçoit la Matrice en paramètre et va afficher les deux
+* grilles de jeu (en version simplifiée) : une avec les pions et l’autre avec la
+* gélatine. En version plus complexe, un affichage couleur est possible avec la
+* gélatine en arrière-fond.
+*/
 void AffichePlateau( Plateau* plateau, bool avecInfos )
 {
 	EffaceEcran();
@@ -102,13 +108,14 @@ void AffichePlateau( Plateau* plateau, bool avecInfos )
 
 		printf("Niveau: %d\n", plateau->niveau);
 		printf("Coups restants: %d\n", plateau->coups);
+		printf("Jellies restantes: %d\n", plateau->jellies);
 	}
 }
 
 void AfficheAvertissement(const char* error, ...)
 {
-	printf("\033[33;1mWARNING: \033[0m");
-	printf("WARNING: ");
+	printf("\n");
+	printf("\b\033[33;1mWARNING: \033[0m");
 
 	va_list errorArgs;
 	va_start(errorArgs, error);
@@ -120,7 +127,8 @@ void AfficheAvertissement(const char* error, ...)
 
 void AfficheErreur( const char* error, ... )
 {
-	printf("\033[31;1mERROR: \033[0m");
+	printf("\n");
+	printf("\b\033[31;1mERROR: \033[0m");
 
 	va_list errorArgs;
 	va_start(errorArgs, error);
@@ -128,7 +136,5 @@ void AfficheErreur( const char* error, ... )
 	va_end(errorArgs);
 
 	printf("\n");
-
-	exit(-1);
 }
 
