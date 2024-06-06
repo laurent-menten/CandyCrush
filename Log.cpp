@@ -29,22 +29,32 @@ void InitialiseLog(const char* filename)
 	fprintf(logFile, " --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- \n");
 }
 
-const char* LogLevelString(LogLevel level)
+static const char* LogLevelString(LogLevel level)
 {
 	switch (level)
 	{
 		case ACTION:		return "*";
-		case ARGS:			return "--->";
-		case INFO:			return "INFO";
-		case WARNING:		return "WARNING";
-		case ERROR_SEVERE:	return "ERROR";
-		case ERROR_FATAL:	return "FATAL";
+		case ARGS:			return "  --->";
+		case RET:			return "  =";
+
+		case INFO:			return "I";
+		case WARNING:		return "W";
+		case ERROR_SEVERE:	return "E";
+		case ERROR_FATAL:	return "F";
 	}
 
 	return "???";
 }
 
-void Log(LogLevel level, const char* format, ...)
+void LogErrno(const char* file, int line, const char* func, LogLevel level, int error)
+{
+	char buffer[80];
+	strerror_s(buffer, error);
+
+	Log(file, line, func, level, "(%d)", error, buffer);
+}
+
+void Log(const char* file, int line, const char* func, LogLevel level, const char* format, ...)
 {
 	time_t t = time(NULL);
 	struct tm tm;
@@ -54,7 +64,7 @@ void Log(LogLevel level, const char* format, ...)
 	char now[64];
 	strftime(now, sizeof(now), "%Y-%m-%d %H:%M:%S", &tm );
 
-	fprintf(logFile, "%d %s: %s ", messageId++, now, LogLevelString(level) );
+	fprintf(logFile, "%d %10s: %s[%d] %s() %s ", messageId++, now, file, line, func, LogLevelString(level));
 
 	va_list vargs;
 	va_start(vargs, format);
@@ -72,5 +82,7 @@ void Log(LogLevel level, const char* format, ...)
 
 void CloseLog()
 {
+	AfficheMessage("Fermeture du fichier de log.");
+
 	fclose(logFile);
 }

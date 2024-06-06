@@ -1,4 +1,6 @@
 
+#include "Log.h"
+#include "Affichage.h"
 #include "Matrice.h"
 
 #include <Windows.h>
@@ -10,6 +12,8 @@ static int niveauMax;
 
 void InitialiseJeu(ParametresNiveau* _prototypesNiveau, int _niveauMax)
 {
+	LOG(INFO, "%s( %p, %d )", __func__, _prototypesNiveau, _niveauMax);
+
 	niveaux = _prototypesNiveau;
 	niveauMax = _niveauMax;
 
@@ -23,6 +27,8 @@ void InitialiseJeu(ParametresNiveau* _prototypesNiveau, int _niveauMax)
 
 int InitialisePlateau( Plateau* plateau, int niveau )
 {
+	LOG(INFO, "%s( %p, %d )", __func__, plateau, niveau);
+
 	if( (niveau < 1) || (niveau > niveauMax) )
 	{
 		return -1;
@@ -42,6 +48,9 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 	plateau->matrice = (Case*)malloc( plateau->colonnes * plateau->lignes * sizeof( Case ) );
 	if (!plateau->matrice)
 	{
+		AfficheErreur("Impossible d'allouer la mémoire pour le plateau");
+
+		LOG(ERROR_FATAL, "Impossible d'allouer la mémoire pour le plateau");
 		return -1;
 	}
 
@@ -70,7 +79,10 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 		plateau->matrice[(y * plateau->lignes) + x].jelly = true;
 	} 
 
-	return 0;
+	int rc = 0;
+	LOG(RET, "%d", rc);
+
+	return rc;
 }
 
 /*
@@ -79,32 +91,57 @@ int InitialisePlateau( Plateau* plateau, int niveau )
  */
 bool Verifie(Plateau* plateau)
 {
-	return true;
+	LOG(INFO, "%s( %p )", __func__, plateau);
+
+	bool rc = true;
+	LOG(RET, "%d", rc);
+
+	return rc;
 }
 
 bool VerifieCoordonnees(Plateau* plateau, int x, int y)
 {
-	return true;
+	LOG(INFO, "%s( %p, %d, %d )", __func__, plateau, x, y);
+
+	bool rc = true;
+	LOG(RET, "%d", rc);
+
+	return rc;
 }
 
 // manque la vérification de l'environement de l'échange
 
 bool VerifieDeplacement(Plateau* plateau, int x1, int y1, int x2, int y2)
 {
+	LOG(INFO, "%s( %p, %d, %d, %d, %d )", __func__, plateau, x1, y1, x2, y2 );
+
 	int x = abs(x1 - x2);
 	int y = abs(y1 - y2);
 
-	return ((x == 0) && (y == 1)) || ((x == 1) && (y == 0));
+	bool rc = ((x == 0) && (y == 1)) || ((x == 1) && (y == 0));
+	LOG(RET, "%d", rc);
+
+	return rc;
 }
 
 bool VerifieCoups(Plateau* plateau)
 {
-	return plateau->coups > 0;
+	LOG(INFO, "%s( %p )", __func__, plateau);
+
+	bool rc = plateau->coups > 0;
+	LOG(RET, "%d", rc);
+
+	return rc;
 }
 
 bool VerifieJellies(Plateau* plateau)
 {
-	return plateau->jellies > 0;
+	LOG(INFO, "%s( %p )", __func__, plateau);
+
+	bool rc = plateau->jellies > 0;
+	LOG(RET, "%d", rc);
+
+	return rc;
 }
 
 /*
@@ -118,6 +155,9 @@ bool VerifieJellies(Plateau* plateau)
  */
 Action* Calcul(Plateau* plateau)
 {
+	LOG(INFO, "%s( %p )", __func__, plateau);
+
+	LOG(RET, "nullptr");
 	return nullptr;
 }
 
@@ -127,6 +167,7 @@ Action* Calcul(Plateau* plateau)
  */
 void Deplacement(Plateau* plateau, int x1, int y1, int x2, int y2)
 {
+	LOG(INFO, "%s( %p, %d, %d, %d, %d )", __func__, plateau, x1, y1, x2, y2);
 }
 
 /*
@@ -138,8 +179,9 @@ void Deplacement(Plateau* plateau, int x1, int y1, int x2, int y2)
  * 
  * La fonction doit recevoir la Matrice et l’action à exécuter en paramètre.
  */
-void SuppressionVerticale(Plateau* plateau, int collone, int ligneDebut, int ligneFin)
+void SuppressionVerticale(Plateau* plateau, int colonne, int ligneDebut, int ligneFin)
 {
+	LOG(INFO, "%s( %p, %d, %d, %d )", __func__, plateau, colonne, ligneDebut, ligneFin );
 }
 
 /*
@@ -154,14 +196,19 @@ void SuppressionVerticale(Plateau* plateau, int collone, int ligneDebut, int lig
  */
 void SuppressionHorizontale(Plateau* plateau, int ligne, int colonneDebut, int colonneFin)
 {
+	LOG(INFO, "%s( %p, %d, %d, %d )", __func__, plateau, ligne, colonneDebut, colonneFin );
 }
 
 void SuppressionColonne(Plateau* plateau, int colonne)
 {
+	LOG(INFO, "%s( %p, %d )", __func__, plateau, colonne);
+
 	SuppressionVerticale(plateau, colonne, 1, plateau->lignes);
 }
 
 void SuppressionLigne(Plateau* plateau, int ligne)
 {
+	LOG(INFO, "%s( %p, %d )", __func__, plateau, ligne);
+
 	SuppressionHorizontale(plateau, ligne, 1, plateau->colonnes);
 }

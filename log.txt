@@ -1,0 +1,117 @@
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-06 13:48:09: INFO InitialiseJeu( 00007FF754721000, 3 )
+1 2024-06-06 13:48:09: * INITIALIZATION
+2 2024-06-06 13:48:09: INFO InitialisePlateau( 000000183BAFF048, 1 )
+3 2024-06-06 13:48:09: * AFFICHAGE
+4 2024-06-06 13:48:09: * CALCUL
+5 2024-06-06 13:48:09: * CALCUL
+6 2024-06-06 13:48:09: * LECTURE
+7 2024-06-06 13:48:13: INFO VerifieCoordonnees( 000000183BAFF048, 1, 2 )
+8 2024-06-06 13:48:15: INFO VerifieCoordonnees( 000000183BAFF048, 1, 3 )
+9 2024-06-06 13:48:15: INFO VerifieDeplacement( 000000183BAFF048, 1, 2, 1, 3 )
+10 2024-06-06 13:48:15: ---> (1,2) - (1,3)
+11 2024-06-06 13:48:15: * LECTURE
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-06 13:53:25: INFO InitialiseJeu( 00007FF615181000, 3 )
+1 2024-06-06 13:53:25: * INITIALIZATION
+2 2024-06-06 13:53:25: INFO InitialisePlateau( 000000361BBEF678, 1 )
+3 2024-06-06 13:53:25: = 0
+4 2024-06-06 13:53:25: * AFFICHAGE
+5 2024-06-06 13:53:25: * CALCUL
+6 2024-06-06 13:53:25: * CALCUL
+7 2024-06-06 13:53:25: * LECTURE
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-06 13:53:46: INFO InitialiseJeu( 00007FF684891000, 3 )
+1 2024-06-06 13:53:46: * INITIALIZATION
+2 2024-06-06 13:53:46: INFO InitialisePlateau( 0000003AE98FF3E8, 1 )
+3 2024-06-06 13:53:46: = 0
+4 2024-06-06 13:53:46: * AFFICHAGE
+5 2024-06-06 13:53:46: * CALCUL
+6 2024-06-06 13:53:46: * CALCUL
+7 2024-06-06 13:53:46: * LECTURE
+8 2024-06-06 13:53:48: INFO VerifieCoordonnees( 0000003AE98FF3E8, 1, 1 )
+9 2024-06-06 13:53:48: = 1
+10 2024-06-06 13:53:50: INFO VerifieCoordonnees( 0000003AE98FF3E8, 1, 2 )
+11 2024-06-06 13:53:50: = 1
+12 2024-06-06 13:53:50: INFO VerifieDeplacement( 0000003AE98FF3E8, 1, 1, 1, 2 )
+13 2024-06-06 13:53:50: = 1
+14 2024-06-06 13:53:50: ---> (1,1) - (1,2)
+15 2024-06-06 13:53:50: * LECTURE
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-06 13:54:27: INFO InitialiseJeu( 00007FF750661000, 3 )
+1 2024-06-06 13:54:27: * INITIALIZATION
+2 2024-06-06 13:54:27: INFO InitialisePlateau( 0000008ED14FF0F8, 1 )
+3 2024-06-06 13:54:27:    = 0
+4 2024-06-06 13:54:27: * AFFICHAGE
+5 2024-06-06 13:54:27: * CALCUL
+6 2024-06-06 13:54:27: * CALCUL
+7 2024-06-06 13:54:27: * LECTURE
+8 2024-06-06 13:54:29: INFO VerifieCoordonnees( 0000008ED14FF0F8, 1, 2 )
+9 2024-06-06 13:54:29:    = 1
+10 2024-06-06 13:54:31: INFO VerifieCoordonnees( 0000008ED14FF0F8, 1, 5 )
+11 2024-06-06 13:54:31:    = 1
+12 2024-06-06 13:54:31: INFO VerifieDeplacement( 0000008ED14FF0F8, 1, 2, 1, 5 )
+13 2024-06-06 13:54:31:    = 0
+14 2024-06-06 13:54:33: INFO VerifieCoordonnees( 0000008ED14FF0F8, 1, 2 )
+15 2024-06-06 13:54:33:    = 1
+16 2024-06-06 13:54:37: INFO VerifieCoordonnees( 0000008ED14FF0F8, 1, 3 )
+17 2024-06-06 13:54:37:    = 1
+18 2024-06-06 13:54:37: INFO VerifieDeplacement( 0000008ED14FF0F8, 1, 2, 1, 3 )
+19 2024-06-06 13:54:37:    = 1
+20 2024-06-06 13:54:37:    ---> (1,2) - (1,3)
+21 2024-06-06 13:54:37: * LECTURE
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-06 14:06:33: WARNING No such device or address
+1 2024-06-06 14:06:33: INFO InitialiseJeu( 00007FF6C9532000, 3 )
+2 2024-06-06 14:06:33: * INITIALIZATION
+3 2024-06-06 14:06:33: INFO InitialisePlateau( 000000AA809BF4F8, 1 )
+4 2024-06-06 14:06:33:  = 0
+5 2024-06-06 14:06:33: * AFFICHAGE
+6 2024-06-06 14:06:33: * CALCUL
+7 2024-06-06 14:06:33: * CALCUL
+8 2024-06-06 14:06:33: * LECTURE
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-06 14:17:39: InitialiseJeu(15) I InitialiseJeu( 00007FF798032000, 3 )
+1 2024-06-06 14:17:39: main(119) * INITIALIZATION
+2 2024-06-06 14:17:39: InitialisePlateau(30) I InitialisePlateau( 000000C39714F528, 1 )
+3 2024-06-06 14:17:39: InitialisePlateau(83)   = 0
+4 2024-06-06 14:17:39: main(145) * AFFICHAGE
+5 2024-06-06 14:17:39: main(255) * CALCUL
+6 2024-06-06 14:17:39: main(255) * CALCUL
+7 2024-06-06 14:17:39: main(162) * LECTURE
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-06 14:21:56: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[15] InitialiseJeu() I InitialiseJeu( 00007FF794CD2000, 3 )
+1 2024-06-06 14:21:56: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[119] main() * INITIALIZATION
+2 2024-06-06 14:21:56: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[30] InitialisePlateau() I InitialisePlateau( 000000B71F1AF098, 1 )
+3 2024-06-06 14:21:56: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[83] InitialisePlateau()   = 0
+4 2024-06-06 14:21:56: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[145] main() * AFFICHAGE
+5 2024-06-06 14:21:56: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[255] main() * CALCUL
+6 2024-06-06 14:21:56: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[255] main() * CALCUL
+7 2024-06-06 14:21:56: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[162] main() * LECTURE
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-06 15:35:16: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[15] InitialiseJeu() I InitialiseJeu( 00007FF7A1792000, 3 )
+1 2024-06-06 15:35:16: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[119] main() * INITIALIZATION
+2 2024-06-06 15:35:16: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[30] InitialisePlateau() I InitialisePlateau( 000000010259F4F8, 1 )
+3 2024-06-06 15:35:16: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[83] InitialisePlateau()   = 0
+4 2024-06-06 15:35:16: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[145] main() * AFFICHAGE
+5 2024-06-06 15:35:16: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[255] main() * CALCUL
+6 2024-06-06 15:35:16: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[255] main() * CALCUL
+7 2024-06-06 15:35:16: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[162] main() * LECTURE
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-06 15:38:35: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[15] InitialiseJeu() I InitialiseJeu( 00007FF6DEB92000, 3 )
+1 2024-06-06 15:38:35: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[137] main() * INITIALIZATION
+2 2024-06-06 15:38:35: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[30] InitialisePlateau() I InitialisePlateau( 000000A461BEF218, 1 )
+3 2024-06-06 15:38:35: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[83] InitialisePlateau()   = 0
+4 2024-06-06 15:38:35: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[163] main() * AFFICHAGE
+5 2024-06-06 15:38:35: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[273] main() * CALCUL
+6 2024-06-06 15:38:35: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[273] main() * CALCUL
+7 2024-06-06 15:38:35: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[180] main() * LECTURE
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-06 15:39:17: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[15] InitialiseJeu() I InitialiseJeu( 00007FF77CE82000, 3 )
+1 2024-06-06 15:39:17: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[137] main() * INITIALIZATION
+2 2024-06-06 15:39:17: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[30] InitialisePlateau() I InitialisePlateau( 000000BDD759F368, 1 )
+3 2024-06-06 15:39:17: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[83] InitialisePlateau()   = 0
+4 2024-06-06 15:39:17: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[163] main() * AFFICHAGE
+5 2024-06-06 15:39:17: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[273] main() * CALCUL
+6 2024-06-06 15:39:17: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[273] main() * CALCUL
+7 2024-06-06 15:39:17: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[180] main() * LECTURE

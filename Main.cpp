@@ -73,17 +73,39 @@ static ParametresNiveau niveaux[]
 	{	20,			20,		30,		20 },
 };
 
+// ***************************************************************************
+// *
+// ****************************************************************************
+
+BOOL WINAPI consoleHandler(_In_ DWORD signal )
+{
+	if (signal == CTRL_C_EVENT)
+	{
+		AfficheAvertissement("Ctrl-C ...");
+
+		// Pour provoquer l'appel de fonctions enregistrée avec atexit();
+
+		exit(-1);
+	}
+
+	return false;
+}
+
 // ****************************************************************************
 // * Point d'entrée ***********************************************************
 // ****************************************************************************
 
 int main()
 {
+	InitialiseLog("log.txt");
+
+	SetConsoleCtrlHandler((PHANDLER_ROUTINE)consoleHandler, TRUE);
+
+	// ------------------------------------------------------------------------
+
 	ActionQueue queue;
 	Plateau plateau;
 	int niveau = 1;
-
-	InitialiseLog( "log.txt" );
 
 	// --- Console en plein écran (simule Alt-Enter) --------------------------
 
@@ -91,10 +113,8 @@ int main()
 	
 	// --- Initialisation -----------------------------------------------------
 
-	Log( INFO, "InitialiseJeu");
 	InitialiseJeu(niveaux, (sizeof(niveaux) / sizeof(ParametresNiveau)));
 
-	Log(INFO, "InitialiseQueue");
 	InitializeQueue( &queue );
 
 	AddToQueue( &queue, CreeActionInitialize() );
@@ -116,13 +136,13 @@ int main()
 			 */
 			case INITIALIZATION:
 			{
-				Log(ACTION, "INITIALIZATION");
+				LOG(ACTION, "INITIALIZATION");
 
 				if( InitialisePlateau( &plateau, niveau ) != 0 )
 				{
 					AfficheErreur( "Erreur de création du niveau %d", niveau );
 
-					Log(ERROR_FATAL, "Erreur de création du niveau %d", niveau); // noreturn
+					LOG(ERROR_FATAL, "Erreur de création du niveau %d", niveau); // noreturn
 					break;
 				}
 
@@ -142,7 +162,7 @@ int main()
 
 			case AFFICHAGE:	// -------------------------------------------------
 			{
-				Log(ACTION, "AFFICHAGE");
+				LOG(ACTION, "AFFICHAGE");
 
 				AffichePlateau( &plateau );
 
@@ -159,7 +179,7 @@ int main()
 
 			case LECTURE:
 			{
-				Log(ACTION, "LECTURE");
+				LOG(ACTION, "LECTURE");
 
 				int x1;
 				int y1;
@@ -200,7 +220,7 @@ int main()
 
 				} while ( !(origineValide && destinationValide) );
 
-				Log(ARGS, "(%d,%d) - (%d,%d)", x1, y1, x2, y2);
+				LOG(ARGS, "(%d,%d) - (%d,%d)", x1, y1, x2, y2);
 
 				AddToQueue( &queue, CreeActionDeplacement( x1, y1, x2, y2 ) );
 
@@ -214,7 +234,7 @@ int main()
 			 */
 			case DEPLACEMENT:
 			{
-				Log(ACTION, "DEPLACEMENT");
+				LOG(ACTION, "DEPLACEMENT");
 
 				ActionDeplacement* actionDeplacement = (ActionDeplacement*)action;
 
@@ -222,7 +242,7 @@ int main()
 				int y1 = actionDeplacement->y1;
 				int x2 = actionDeplacement->x2;
 				int y2 = actionDeplacement->y2;
-				Log(ARGS, "(%d,%d) - (%d,%d)", x1, y1, x2, y2);
+				LOG(ARGS, "(%d,%d) - (%d,%d)", x1, y1, x2, y2);
 
 				Deplacement(&plateau, x1, y1, x2, y2);
 
@@ -252,7 +272,7 @@ int main()
 
 			case CALCUL:
 			{
-				Log(ACTION, "CALCUL");
+				LOG(ACTION, "CALCUL");
 
 				AddToQueue( &queue, CreeActionLecture() );
 
@@ -269,7 +289,7 @@ int main()
 
 			case VERIFICATION:
 			{
-				Log(ACTION, "VERIFICATION");
+				LOG(ACTION, "VERIFICATION");
 
 				break;
 			}
@@ -286,14 +306,14 @@ int main()
 
 			case SUPRESSION_V:
 			{
-				Log(ACTION, "SUPRESSION_V");
+				LOG(ACTION, "SUPRESSION_V");
 
 				ActionSupressionV* actionSupression = (ActionSupressionV*)action;
 
 				int colonne = actionSupression->index;
 				int ligneDebut = actionSupression->debut;
 				int ligneFin = actionSupression->fin;
-				Log(ARGS, "c:%d %d-%d", colonne, ligneDebut, ligneFin);
+				LOG(ARGS, "c:%d %d-%d", colonne, ligneDebut, ligneFin);
 
 				SuppressionVerticale( &plateau, colonne, ligneDebut, ligneDebut );
 
@@ -314,14 +334,14 @@ int main()
 
 			case SUPRESSION_H:
 			{
-				Log(ACTION, "SUPRESSION_H");
+				LOG(ACTION, "SUPRESSION_H");
 
 				ActionSupressionH* actionSupression = (ActionSupressionH*)action;
 
 				int ligne = actionSupression->index;
 				int colonneDebut = actionSupression->debut;
 				int colonneFin = actionSupression->fin;
-				Log(ARGS, "l:%d %d-%d", ligne, colonneDebut, colonneFin);
+				LOG(ARGS, "l:%d %d-%d", ligne, colonneDebut, colonneFin);
 
 				SuppressionHorizontale( &plateau, ligne, colonneDebut, colonneFin );
 
@@ -332,12 +352,12 @@ int main()
 
 			case SUPRESSION_COLONNE:
 			{
-				Log(ACTION, "SUPRESSION_COLONNE");
+				LOG(ACTION, "SUPRESSION_COLONNE");
 
 				ActionSupressionColonne* actionSupression = (ActionSupressionColonne*)action;
 
 				int colonne = actionSupression->index;
-				Log(ARGS, "c:%d", colonne );
+				LOG(ARGS, "c:%d", colonne );
 
 				SuppressionColonne( &plateau, colonne );
 
@@ -346,12 +366,12 @@ int main()
 
 			case SUPRESSION_LIGNE:
 			{
-				Log(ACTION, "SUPRESSION_LIGNE");
+				LOG(ACTION, "SUPRESSION_LIGNE");
 
 				ActionSupressionLigne* actionSupression = (ActionSupressionLigne*)action;
 
 				int ligne = actionSupression->index;
-				Log(ARGS, "l:%d", ligne);
+				LOG(ARGS, "l:%d", ligne);
 
 				SuppressionLigne( &plateau, ligne );
 
@@ -360,7 +380,7 @@ int main()
 
 			case FIN_NIVEAU:	// ---------------------------------------------
 			{
-				Log(ACTION, "FIN_NIVEAU");
+				LOG(ACTION, "FIN_NIVEAU");
 
 				if (++niveau <= 3)
 				{
@@ -376,7 +396,7 @@ int main()
 
 			default:	// -----------------------------------------------------
 			{
-				Log(ERROR_SEVERE, "Action inconnue: %d", action->type);
+				LOG(ERROR_SEVERE, "Action inconnue: %d", action->type);
 
 				// Ne devrait normalement jamais arriver...
 

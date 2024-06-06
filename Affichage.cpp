@@ -112,6 +112,20 @@ void AffichePlateau( Plateau* plateau, bool avecInfos )
 	}
 }
 
+
+void AfficheMessage(const char* error, ...)
+{
+	printf("\n");
+	printf("\b\033[32;1mINFO: \033[0m");
+
+	va_list errorArgs;
+	va_start(errorArgs, error);
+	vprintf(error, errorArgs);
+	va_end(errorArgs);
+
+	printf("\n");
+}
+
 void AfficheAvertissement(const char* error, ...)
 {
 	printf("\n");
