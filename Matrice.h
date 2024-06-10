@@ -47,13 +47,18 @@ typedef struct ParametresNiveau
 
 typedef struct Plateau
 {
-	int niveau;			// niveau de jeu
-	int colonnes;		// nombre de colonnes
-	int lignes;			// nombre de lignes
-	int coups;			// nombre de coups restants
-	int jellies;		// nombre de jellies restantes
+	int niveau;								// niveau de jeu
 
-	Case** matrice;		// plateau de jeu
+	int colonnes;							// nombre de colonnes
+	int lignes;								// nombre de lignes
+
+	int coups;								// nombre de coups restants
+	int coupsMax;							// nombre de coups permis
+
+	int jellies;							// nombre de jellies restantes
+	int jelliesMax;							// nombre de jellies de départ
+
+	Case** matrice;							// plateau de jeu
 } Plateau;
 
 // Renvois l'index d'une entrée sur le plateau de jeu en prenant en compte

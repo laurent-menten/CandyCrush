@@ -61,12 +61,27 @@
  *   Le total de coups à jouer doit être affiché.
  */
 
+/*
+ * PROBLEME DE GAMEPLAY...
+ * 
+ * Dans l'action CALCUL, le fait de vérifier toujours les colonnes avant les
+ * lignes (ce serait la même chose si on verifie toujours les lignes
+ * avant les colonnes) fait parfois disparaitre des alignements qui auraient
+ * pu supprimer des gélatines. .
+ * 
+ * Solution à possible:
+ * Partir de chaque pion, rendre vide les cases en alignement dans les 4 
+ * directions puis tout faire tomber quand il n'y a plus aucun alignement.
+ */
+
 // ****************************************************************************
 // * Configuration ************************************************************
 // ****************************************************************************
 
 static ParametresNiveau niveaux[]
 {
+	{	10,			10,		1,		5 },
+
 	//	colonnes	lignes	coups	jellies
 	{	20,			20,		40,		10 },
 	{	20,			20,		35,		15 },
@@ -77,18 +92,30 @@ static ParametresNiveau niveaux[]
 // *
 // ****************************************************************************
 
+// Fonction de gestion des évènement liés à la fenêtre console.
+// Sera appelée automatiquement.
+
 BOOL WINAPI consoleHandler(_In_ DWORD signal )
 {
 	if (signal == CTRL_C_EVENT)
 	{
-		AfficheAvertissement("Ctrl-C ...");
+		AfficheAvertissement("Interception de Ctrl-C ...");
 
-		// Pour provoquer l'appel de fonctions enregistrée avec atexit();
+		// Pour provoquer l'appel des fonctions enregistrée avec atexit();
 
 		exit(-1);
 	}
 
 	return false;
+}
+
+// ----------------------------------------------------------------------------
+
+static ActionQueue queue;
+
+void DeinitialiseQueue()
+{
+	FinaliseQueue(&queue);
 }
 
 // ****************************************************************************
@@ -97,13 +124,31 @@ BOOL WINAPI consoleHandler(_In_ DWORD signal )
 
 int main()
 {
+	// ------------------------------------------------------------------------
+	// - Pré-Initalisation ----------------------------------------------------
+	// ------------------------------------------------------------------------
+
+	// Initialisation du système de logging fichier.
+	// Seulement si la configuration du projet est Debug.
+
+#ifdef _DEBUG
 	InitialiseLog("log.txt");
+#endif
+
+	// Installation dans le système de la fonction de gestion des évènements
+	// liés à la fenêtre console.
 
 	SetConsoleCtrlHandler((PHANDLER_ROUTINE)consoleHandler, TRUE);
 
+	// Appel automatique de la finalisation de que Queue lors de la sortie du
+	// programme avec exit()
+
+	atexit( DeinitialiseQueue );
+
+	// ------------------------------------------------------------------------
+	// - Intialisation du jeu proprement dit ----------------------------------
 	// ------------------------------------------------------------------------
 
-	ActionQueue queue;
 	Plateau plateau;
 	int niveau = 1;
 
@@ -119,38 +164,11 @@ int main()
 
 	AddToQueue(&queue, CreeActionInitialize());
 
-/*
-	int l = 0;
-	int c1 = 0;
-	int c2 = 0;
-	int taille = 0;
-
-	InitialisePlateau(&plateau, niveau);
-	AffichePlateau(&plateau);
-
-	do
-	{
-		taille = VerifieLignes(&plateau, &l, &c1, &c2);
-		if (taille >= 3)
-		{
-			SuppressionHorizontale(&plateau, l, c1, c2);
-		}
-
-		printf("%d... %d: %d %d\n", taille, l, c1, c2);
-		(void)getchar();
-
-		AffichePlateau(&plateau);
-	}
-	while (taille > 0);
-
-	return 0;
-*/
-
 	// --- Boucle de jeu -------------------------------------------------------
 
-	Action* action;
-
 	bool finJeu = false;
+
+	Action* action;
 
 	while( !finJeu && ((action = GetFromQueue( &queue )) != nullptr) )
 	{
@@ -165,6 +183,7 @@ int main()
 			 * On ajoute l’action CALCUL dans la Queue afin de traiter les éventuelles
 			 * séquences de pions qui seraient déjà existantes dans la Matrice.
 			 */
+
 			case INITIALIZATION:
 			{
 				LOG(ACTION, "INITIALIZATION");
@@ -174,7 +193,6 @@ int main()
 					AfficheErreur( "Erreur de création du niveau %d", niveau );
 
 					LOG(ERROR_FATAL, "Erreur de création du niveau %d", niveau); // noreturn
-					break;
 				}
 
 				AddToQueue(&queue, CreeActionCalcul());
@@ -235,14 +253,14 @@ int main()
 				{
 					AffichePlateau(&plateau);
 
+					// --- Message d'erreur de l'itération précédente
+
 					if (deplacementInvalide)
 					{
 						AfficheAvertissement("Les coordonnees (%d,%d)-(%d,%d) ne sont pas contigues.\n", l1, c1, l2, c2);
 						origineValide = false;
 						destinationValide = false;
 					}
-
-					// ---
 
 					if (origineInvalide)
 					{
@@ -256,7 +274,7 @@ int main()
 						destinationInvalide = false;
 					}
 
-					// ---
+					// --- Lecture (éventuelle) de l'origine (si on a pas déjà l'info)
 
 					if (origineValide)
 					{
@@ -264,7 +282,7 @@ int main()
 					}
 					else
 					{
-						LectureCoordonnees( "Origine [x y]: ", &l1, &c1);
+						LectureCoordonnees("Origine [ligne colonne]: ", &l1, &c1);
 						origineValide = VerifieCoordonnees(&plateau, l1, c1);
 						if (!origineValide)
 						{
@@ -273,7 +291,9 @@ int main()
 						}
 					}
 
-					LectureCoordonnees( "Destination [x y]: ", &l2, &c2);
+					// --- Lecture de la destination
+
+					LectureCoordonnees("Destination [ligne colonne]: ", &l2, &c2);
 					destinationValide = VerifieCoordonnees(&plateau, l2, c2);
 					if (!destinationValide)
 					{
@@ -281,7 +301,7 @@ int main()
 						continue;
 					}
 
-					// ---
+					// --- Verification de la validité du déplacement
 
 					deplacementInvalide = !VerifieDeplacement(&plateau, l1, c1, l2, c2);
 
@@ -303,6 +323,7 @@ int main()
 			 * coordonnées ont été introduites.
 			 * La fonction va générer l’action CALCUL.
 			 */
+
 			case DEPLACEMENT:
 			{
 				LOG(ACTION, "DEPLACEMENT");
@@ -348,33 +369,45 @@ int main()
 			{
 				LOG(ACTION, "CALCUL");
 
-				int c_l = 0;
-				int l1_c1 = 0;
-				int l2_c2 = 0;
-				int taille;
+				AffichePlateau(&plateau);
 
-				taille = VerifieColonnes(&plateau, &c_l, &l1_c1, &l2_c2 );
-				if (taille == 3)
 				{
-					AddToQueue(&queue, CreeActionSupressionV(c_l, l1_c1, l2_c2) );
-					break;
-				}
-				else if (taille > 3)
-				{
-					AddToQueue(&queue, CreeActionSupressionColonne(c_l) );
-					break;
+					int colonne = 0;
+					int ligneDebut = 0;
+					int ligneFin = 0;
+					int taille;
+
+					taille = VerifieColonnes(&plateau, &colonne, &ligneDebut, &ligneFin);
+					if (taille == 3)
+					{
+						AddToQueue(&queue, CreeActionSupressionV(colonne, ligneDebut, ligneFin));
+						break;
+					}
+					else if (taille > 3)
+					{
+						AddToQueue(&queue, CreeActionSupressionColonne(colonne));
+						break;
+					}
 				}
 
-				taille = VerifieLignes(&plateau, &c_l, &l1_c1, &l2_c2);
-				if (taille == 3)
 				{
-					AddToQueue(&queue, CreeActionSupressionH(c_l, l1_c1, l2_c2));
-					break;
-				}
-				else if (taille > 3)
-				{
-					AddToQueue(&queue, CreeActionSupressionLigne(c_l));
-					break;
+					int ligne;
+					int colonneDebut = 0;
+					int colonneFin = 0;
+					int taille;
+
+					taille = VerifieLignes(&plateau, &ligne, &colonneDebut, &colonneFin);
+					if (taille == 3)
+					{
+						AddToQueue(&queue, CreeActionSupressionH(ligne, colonneDebut, colonneFin));
+						break;
+					}
+					else if (taille > 3)
+					{
+						AddToQueue(&queue, CreeActionSupressionLigne(ligne));
+						break;
+					}
+
 				}
 
 				AddToQueue( &queue, CreeActionVerification() );
@@ -393,18 +426,28 @@ int main()
 			 *   queue. Sinon, on place l’action LECTURE dans la Queue
 			 */
 
+			// consigne pas claire ...
+
 			case VERIFICATION:
 			{
 				LOG(ACTION, "VERIFICATION");
 
 				if (!VerifieCoups(&plateau))
 				{
+					printf("Vous avez perdu...\n");
+					printf("Pressez une touche\n");
+					(void)getchar();
+
 					finJeu = true;
 					break;
 				}
 
 				if (!VerifieJellies(&plateau))
 				{
+					printf("Bravo...\n");
+					printf("Pressez une touche\n");
+					(void) getchar();
+
 					AddToQueue(&queue, CreeActionFinNiveau());
 				}
 				else
@@ -440,7 +483,7 @@ int main()
 				int ligneFin = actionSupression->fin;
 				LOG(ARGS, "c:%d %d-%d", colonne, ligneDebut, ligneFin);
 
-				SuppressionVerticale( &plateau, colonne, ligneDebut, ligneDebut );
+				SuppressionVerticale( &plateau, colonne, ligneDebut, ligneFin );
 
 				AddToQueue(&queue, CreeActionCalcul());
 
@@ -539,20 +582,20 @@ int main()
 				break;
 			}
 
-			default:	// -----------------------------------------------------
+			// ---------------------------------------------------------------
+			// - Ne devrait JAMAIS arriver... --------------------------------
+			// ---------------------------------------------------------------
+
+			default:
 			{
-				LOG(ERROR_SEVERE, "Action inconnue: %d", action->type);
-
-				// Ne devrait normalement jamais arriver...
-
 				AfficheErreur("Action de type %d non gérée", action->type);
+
+				LOG(ERROR_FATAL, "Action inconnue: %d", action->type); // noreturn
 			}
 		}
 
 		free( action );
 	}
 
-	FinaliseQueue(&queue);
-
-	return 0;
+	exit(0);
 }

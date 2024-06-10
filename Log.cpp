@@ -9,7 +9,7 @@
 #include <time.h>
 #include <string.h>
 
-static FILE* logFile;
+static FILE* logFile = nullptr;
 static int messageId = 0;
 
 void InitialiseLog(const char* filename)
@@ -19,7 +19,8 @@ void InitialiseLog(const char* filename)
 	{
 		char buffer[80];
 		strerror_s(buffer, error);
-		AfficheErreur("Impossible d'ouvrir le fichier de log '%s'\nErreur %d: %s\n", filename, error, buffer);
+		AfficheErreur("Impossible d'ouvrir le fichier de log '%s'\n"
+			"Erreur %d: %s\n", filename, error, buffer);
 
 		exit(-1);
 	}
@@ -28,6 +29,22 @@ void InitialiseLog(const char* filename)
 
 	fprintf(logFile, " --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- \n");
 }
+
+
+void CloseLog()
+{
+	if (logFile == nullptr)
+	{
+		return;
+	}
+
+	// ---
+
+	AfficheMessage("Fermeture du fichier de log.");
+
+	fclose(logFile);
+}
+
 
 static const char* LogLevelString(LogLevel level)
 {
@@ -48,41 +65,52 @@ static const char* LogLevelString(LogLevel level)
 
 void LogErrno(const char* file, int line, const char* func, LogLevel level, int error)
 {
+	if (logFile == nullptr)
+	{
+		return;
+	}
+
+	// ---
+
 	char buffer[80];
 	strerror_s(buffer, error);
 
-	Log(file, line, func, level, "(%d)", error, buffer);
+	Log(file, line, func, level, "(errno = %d)", error, buffer);
 }
 
 void Log(const char* file, int line, const char* func, LogLevel level, const char* format, ...)
 {
+	if (logFile == nullptr && level != ERROR_FATAL)
+	{
+		return;
+	}
+
+	// ---
+
 	time_t t = time(NULL);
 	struct tm tm;
-	
+
 	localtime_s(&tm, &t);
 
 	char now[64];
-	strftime(now, sizeof(now), "%Y-%m-%d %H:%M:%S", &tm );
+	strftime(now, sizeof(now), "%Y-%m-%d %H:%M:%S", &tm);
 
-	fprintf(logFile, "%d %10s: %s[%d] %s() %s ", messageId++, now, file, line, func, LogLevelString(level));
-
+	char message[1024];
 	va_list vargs;
 	va_start(vargs, format);
-	vfprintf(logFile, format, vargs);
+	vsprintf_s(message, format, vargs);
 	va_end(vargs);
 
-	fprintf(logFile, "\n");
-	fflush(logFile);
+	if (logFile != nullptr)
+	{
+		fprintf(logFile, "%d %10s: %s[%d] %s() %s: %s\n", messageId++, now, file, line, func, LogLevelString(level), message);
+
+		fflush(logFile);
+	}
 
 	if (level == ERROR_FATAL)
 	{
+		AfficheErreur( message );
 		exit(-1);
 	}
-}
-
-void CloseLog()
-{
-	AfficheMessage("Fermeture du fichier de log.");
-
-	fclose(logFile);
 }

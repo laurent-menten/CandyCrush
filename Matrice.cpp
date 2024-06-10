@@ -22,6 +22,7 @@ void InitialiseJeu(ParametresNiveau* _prototypesNiveau, int _niveauMax)
 	niveauMax = _niveauMax;
 
 	// pour éviter que rand() ne donne toujours les mêmes valeurs.
+
 	srand((unsigned int)GetTickCount64());
 }
 
@@ -44,10 +45,15 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 	}
 
 	plateau->niveau = niveau;
+
 	plateau->colonnes = niveaux[niveau - 1].colonnes;
 	plateau->lignes = niveaux[niveau - 1].lignes;
+
 	plateau->coups = niveaux[niveau - 1].coups;
+	plateau->coupsMax = niveaux[niveau - 1].coups;
+
 	plateau->jellies = niveaux[niveau - 1].jellies;
+	plateau->jelliesMax = niveaux[niveau - 1].jellies;
 
 	plateau->matrice = (Case**)malloc( plateau->colonnes * plateau->lignes * sizeof( Case* ) );
 	if (!plateau->matrice)
@@ -89,6 +95,20 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 
 		plateau->matrice[GetNormalizedIndex(plateau, l, c)]->jelly = true;
 	} 
+
+#ifdef _DEBUG
+	plateau->matrice[GetNormalizedIndex(plateau, 1, plateau->colonnes-3)]->type = BLEU;
+	plateau->matrice[GetNormalizedIndex(plateau, 1, plateau->colonnes-2)]->type = BLEU;
+	plateau->matrice[GetNormalizedIndex(plateau, 1, plateau->colonnes-1)]->type = BLEU;
+	plateau->matrice[GetNormalizedIndex(plateau, 1, plateau->colonnes-0)]->type = BLEU;
+
+	plateau->matrice[GetNormalizedIndex(plateau, plateau->lignes-3, 1)]->type = BLEU;
+	plateau->matrice[GetNormalizedIndex(plateau, plateau->lignes-2, 1)]->type = BLEU;
+	plateau->matrice[GetNormalizedIndex(plateau, plateau->lignes-1, 1)]->type = BLEU;
+	plateau->matrice[GetNormalizedIndex(plateau, plateau->lignes-0, 1)]->type = BLEU;
+
+	AffichePlateau(plateau);
+#endif
 
 	int rc = 0;
 	LOG(RET, "%d", rc);
@@ -181,22 +201,19 @@ bool VerifieJellies(Plateau* plateau)
 // le nombre de pions successifs et les infos si trouvé.
 int VerifieColonnes(Plateau* plateau, int* colonne, int* ligneDebut, int* ligneFin)
 {
+	int c;
 	int l;
 	int lz;
-	int c;
 
 	for (c = 1; c <= plateau->colonnes; c++)
 	{
 		Case* pionDebut = plateau->matrice[GetNormalizedIndex(plateau, 1, c)];
 
-		for (l = 1, lz = 1; l+lz < plateau->lignes; )
+		for (l = 1, lz = 1; l+lz <= plateau->lignes; )
 		{
 			Case* pionFin = plateau->matrice[GetNormalizedIndex(plateau, l+lz, c)];
 
-//			AffichePlateau(plateau);
-//			printf("%d: %d +%d = %d\n", c, l, lz, l+lz);
-
-			if (!pionDebut->vide && (pionFin->type == pionDebut->type))
+			if (pionFin->type == pionDebut->type)
 			{
 				lz++;
 			}
@@ -204,19 +221,22 @@ int VerifieColonnes(Plateau* plateau, int* colonne, int* ligneDebut, int* ligneF
 			{
 				if (lz > 2)
 				{
-					*colonne = c;
-					*ligneDebut = l;
-					*ligneFin = l + lz - 1;
-
-					return lz;
+					break;
 				}
 
 				pionDebut = pionFin;
 				l += lz;
 				lz = 1;
 			}
+		}
 
-//			(void) getchar();
+		if (lz > 2)
+		{
+			*colonne = c;
+			*ligneDebut = l;
+			*ligneFin = l + lz - 1;
+
+			return lz;
 		}
 	}
 
@@ -233,14 +253,11 @@ int VerifieLignes(Plateau* plateau, int* ligne, int* colonneDebut, int* colonneF
 	{
 		Case* pionDebut = plateau->matrice[GetNormalizedIndex(plateau, l, 1)];
 
-		for (c = 1, cz = 1; c + cz < plateau->colonnes; )
+		for (c = 1, cz = 1; c + cz <= plateau->colonnes; )
 		{
 			Case* pionFin = plateau->matrice[GetNormalizedIndex(plateau, l, c + cz)];
 
-//			AffichePlateau(plateau);
-//			printf("%d: %d +%d = %d\n", l, c, cz, c+cz);
-
-			if (!pionDebut->vide && (pionFin->type == pionDebut->type))
+			if (pionFin->type == pionDebut->type)
 			{
 				cz++;
 			}
@@ -248,19 +265,22 @@ int VerifieLignes(Plateau* plateau, int* ligne, int* colonneDebut, int* colonneF
 			{
 				if (cz > 2)
 				{
-					*ligne = l;
-					*colonneDebut = c;
-					*colonneFin = c + cz - 1;
-
-					return cz;
+					break;
 				}
 
 				pionDebut = pionFin;
 				c += cz;
 				cz = 1;
 			}
+		}
 
-//			(void) getchar();
+		if (cz > 2)
+		{
+			*ligne = l;
+			*colonneDebut = c;
+			*colonneFin = c + cz - 1;
+
+			return cz;
 		}
 	}
 
@@ -298,6 +318,8 @@ void Deplacement(Plateau* plateau, int l1, int c1, int l2, int c2)
 	Case* tmp = plateau->matrice[i1];
 	plateau->matrice[i1] = plateau->matrice[i2];
 	plateau->matrice[i2] = tmp;
+
+	plateau->coups--;
 }
 
 /*
@@ -309,18 +331,16 @@ void Deplacement(Plateau* plateau, int l1, int c1, int l2, int c2)
  * 
  * La fonction doit recevoir la Matrice et l’action à exécuter en paramètre.
  */
+
 void SuppressionVerticale(Plateau* plateau, int colonne, int ligneDebut, int ligneFin)
 {
 	LOG(INFO, "%s( %p, %d, %d, %d )", __func__, plateau, colonne, ligneDebut, ligneFin );
 
-	int l;
-	int l2;
-
-	// optimization pour une colonne complète
+	// --- optimization pour une colonne complète
 
 	if (ligneDebut == 1 && ligneFin == plateau->lignes)
 	{
-		for (l = ligneDebut; l <= ligneFin; l++)
+		for (int l = ligneDebut; l <= ligneFin; l++)
 		{
 			int i = GetNormalizedIndex(plateau, l, colonne);
 
@@ -337,9 +357,9 @@ void SuppressionVerticale(Plateau* plateau, int colonne, int ligneDebut, int lig
 		return;
 	}
 
-	// supprime les pions de la ligne
+	// -- supprime les pions de la colonne
 
-	for (l = ligneDebut; l <= ligneFin; l++)
+	for (int l = ligneDebut; l <= ligneFin; l++)
 	{
 		int i = GetNormalizedIndex(plateau, l, colonne);
 
@@ -348,24 +368,31 @@ void SuppressionVerticale(Plateau* plateau, int colonne, int ligneDebut, int lig
 			plateau->jellies--;
 		}
 
-		free(plateau->matrice[i]);
+		plateau->matrice[i]->vide = true;
 	}
 
-	// déplace les pions vers le bas
+	// déplace les pions restants de la colonne vers le bas
 
-	for (l = ligneDebut, l2 = ligneFin + 1; l <= (plateau->lignes - (ligneFin - ligneDebut) - 1); l++, l2++ )
+	int compteLignes = (ligneFin - ligneDebut) + 1;
+
+	for (int l = ligneDebut; l <= (plateau->lignes - compteLignes) ; l++ )
 	{
 		int i1 = GetNormalizedIndex(plateau, l, colonne);
-		int i2 = GetNormalizedIndex(plateau, l2, colonne);
+		int i2 = i1 + (compteLignes * plateau->colonnes);
 
+		Case* tmp = plateau->matrice[i1];
 		plateau->matrice[i1] = plateau->matrice[i2];
+		plateau->matrice[i2] = tmp;
 	}
 
-	// insère les nouveaux pions
+	// -- insère les nouveaux pions pour remplir la colonne
 
-	for (l = (plateau->lignes - (ligneFin - ligneDebut) - 1) + 1; l < plateau->lignes; l++)
+	for (int l = (plateau->lignes - compteLignes) + 1; l <= plateau->lignes; l++)
 	{
 		int i = GetNormalizedIndex(plateau, l, colonne);
+
+		free(plateau->matrice[i]);
+
 		plateau->matrice[i] = CreeCaseAleatoire();
 	}
 }
