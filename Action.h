@@ -51,10 +51,10 @@ typedef struct ActionDeplacement
 {
 	Action action;
 
-	int x1;
-	int y1;
-	int x2;
-	int y2;
+	int l1;
+	int c1;
+	int l2;
+	int c2;
 
 } ActionDeplacement;
 

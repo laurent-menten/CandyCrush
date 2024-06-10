@@ -41,6 +41,10 @@ typedef struct ParametresNiveau
 
 // Structure représentant le plateau de jeu.
 
+// Note: j'ai changé la représentation du plateau d'un array de Case un array de 
+// pointeurs de Case, ce qui simplifie le déplacement d'un Case. En effect plutôt
+// que devoir copier chaque info de Case individuellement on copie juste le pointeur.
+
 typedef struct Plateau
 {
 	int niveau;			// niveau de jeu
@@ -49,22 +53,36 @@ typedef struct Plateau
 	int coups;			// nombre de coups restants
 	int jellies;		// nombre de jellies restantes
 
-	Case* matrice;		// plateau de jeu
+	Case** matrice;		// plateau de jeu
 } Plateau;
+
+// Renvois l'index d'une entrée sur le plateau de jeu en prenant en compte
+// que les index sont basé sur 0 et non 1.
+//
+// fonction à utiliser chaque fois qu'il faut accéder à une entrée du plateau
+// déclarée inline donc est "collée" dans le code plutôt que générer un appel
+
+inline int GetNormalizedIndex(Plateau* plateau, int l, int c)
+{
+	return ((l - 1) * plateau->colonnes) + (c - 1);
+}
 
 void InitialiseJeu(ParametresNiveau* niveaux, int niveauMax);
 int InitialisePlateau( Plateau* plateau, int niveau );
+Case* CreeCaseAleatoire();
 
 bool Verifie(Plateau* plateau);
-bool VerifieCoordonnees(Plateau* plateau, int x, int y);
-bool VerifieDeplacement(Plateau* plateau, int x1, int y1, int x2, int y2);
+bool VerifieCoordonnees(Plateau* plateau, int l, int c);
+bool VerifieDeplacement(Plateau* plateau, int l1, int c1, int l2, int c2);
 bool VerifieCoups(Plateau* plateau);
 bool VerifieJellies(Plateau* plateau);
+int VerifieColonnes(Plateau* plateau, int* colonne, int* ligneDebut, int* ligneFin);
+int VerifieLignes(Plateau* plateau, int* ligne, int* colonneDebut, int* colonneFin);
 
 Action* Calcul(Plateau* plateau);
-void Deplacement(Plateau* plateau, int x1, int y1, int x2, int y2);
+void Deplacement(Plateau* plateau, int l1, int c1, int l2, int c2);
 
-void SuppressionVerticale(Plateau* plateau, int collone, int ligneDebut, int ligneFin );
+void SuppressionVerticale(Plateau* plateau, int colonne, int ligneDebut, int ligneFin );
 void SuppressionHorizontale(Plateau* plateau, int ligne, int colnoneDebut, int colonneFin );
 void SuppressionColonne(Plateau* plateau, int colonne);
 void SuppressionLigne(Plateau* plateau, int ligne);

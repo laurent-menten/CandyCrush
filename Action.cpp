@@ -60,10 +60,10 @@ Action* CreeActionDeplacement(int x1, int y1, int x2, int y2)
 	}
 
 	action->action.type = DEPLACEMENT;
-	action->x1 = x1;
-	action->y1 = y1;
-	action->x2 = x2;
-	action->y2 = y2;
+	action->l1 = x1;
+	action->c1 = y1;
+	action->l2 = x2;
+	action->c2 = y2;
 
 	return (Action*)action;
 

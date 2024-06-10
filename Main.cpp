@@ -110,14 +110,41 @@ int main()
 	// --- Console en plein écran (simule Alt-Enter) --------------------------
 
 	MaximizeConsole();
-	
+
 	// --- Initialisation -----------------------------------------------------
 
 	InitialiseJeu(niveaux, (sizeof(niveaux) / sizeof(ParametresNiveau)));
 
-	InitializeQueue( &queue );
+	InitializeQueue(&queue);
 
-	AddToQueue( &queue, CreeActionInitialize() );
+	AddToQueue(&queue, CreeActionInitialize());
+
+/*
+	int l = 0;
+	int c1 = 0;
+	int c2 = 0;
+	int taille = 0;
+
+	InitialisePlateau(&plateau, niveau);
+	AffichePlateau(&plateau);
+
+	do
+	{
+		taille = VerifieLignes(&plateau, &l, &c1, &c2);
+		if (taille >= 3)
+		{
+			SuppressionHorizontale(&plateau, l, c1, c2);
+		}
+
+		printf("%d... %d: %d %d\n", taille, l, c1, c2);
+		(void)getchar();
+
+		AffichePlateau(&plateau);
+	}
+	while (taille > 0);
+
+	return 0;
+*/
 
 	// --- Boucle de jeu -------------------------------------------------------
 
@@ -129,6 +156,10 @@ int main()
 	{
 		switch( action->type )
 		{
+			// ---------------------------------------------------------------
+			// - INITIALIZATION ----------------------------------------------
+			// ---------------------------------------------------------------
+
 			/*
 			 * Cette fonction va initialiser le début d’un nouveau niveau
 			 * On ajoute l’action CALCUL dans la Queue afin de traiter les éventuelles
@@ -146,11 +177,14 @@ int main()
 					break;
 				}
 
-				AddToQueue( &queue, CreeActionAffichage() );
-				AddToQueue( &queue, CreeActionCalcul() );
+				AddToQueue(&queue, CreeActionCalcul());
 
 				break;
 			}
+
+			// ---------------------------------------------------------------
+			// - AFFICHAGE ---------------------------------------------------
+			// ---------------------------------------------------------------
 
 			/*
 			 * Cette action a pour effet d’effacer l’écran et de redessiner les deux
@@ -160,7 +194,7 @@ int main()
 			 *		- La matrice avec l’emplacement de la gélatine.
 			 */
 
-			case AFFICHAGE:	// -------------------------------------------------
+			case AFFICHAGE:
 			{
 				LOG(ACTION, "AFFICHAGE");
 
@@ -170,6 +204,10 @@ int main()
 
 				break;
 			}
+
+			// ---------------------------------------------------------------
+			// - LECTURE -----------------------------------------------------
+			// ---------------------------------------------------------------
 
 			/*
 			 * - Lecture des coordonnées X et Y des deux cases qui doivent être
@@ -181,13 +219,15 @@ int main()
 			{
 				LOG(ACTION, "LECTURE");
 
-				int x1;
-				int y1;
+				int l1 = 0;
+				int c1 = 0;
 				bool origineValide = false;
+				bool origineInvalide = false;
 
-				int x2;
-				int y2;
+				int l2 = 0;
+				int c2 = 0;
 				bool destinationValide = false;
+				bool destinationInvalide = false;
 
 				bool deplacementInvalide = false;
 
@@ -197,35 +237,66 @@ int main()
 
 					if (deplacementInvalide)
 					{
-						AfficheAvertissement("Les coordonnées (%d,%d)-(%d,%d) ne sont pas contigues.\n", x1, y1, x2, y2);
+						AfficheAvertissement("Les coordonnees (%d,%d)-(%d,%d) ne sont pas contigues.\n", l1, c1, l2, c2);
+						origineValide = false;
+						destinationValide = false;
 					}
+
+					// ---
+
+					if (origineInvalide)
+					{
+						AfficheAvertissement("L'origine doit etre comprise entre (%d-%d) et (%d-%d).\n", 1, 1, plateau.lignes, plateau.colonnes);
+						origineInvalide = false;
+					}
+
+					if (destinationInvalide)
+					{
+						AfficheAvertissement("La destination doit etre comprise entre (%d-%d) et (%d-%d).\n", 1, 1, plateau.lignes, plateau.colonnes);
+						destinationInvalide = false;
+					}
+
+					// ---
 
 					if (origineValide)
 					{
-						printf("Origine: (%d, %d)\n", x1, y1);
+						printf("Origine: (%d, %d)\n", l1, c1);
 					}
 					else
 					{
-						LectureCoordonnees( "Origine [x y]: ", &x1, &y1);
-						origineValide = VerifieCoordonnees(&plateau, x1, y1);
+						LectureCoordonnees( "Origine [x y]: ", &l1, &c1);
+						origineValide = VerifieCoordonnees(&plateau, l1, c1);
+						if (!origineValide)
+						{
+							origineInvalide = true;
+							continue;
+						}
 					}
 
-					LectureCoordonnees( "Destination [x y]: ", &x2, &y2);
-					destinationValide = VerifieCoordonnees(&plateau, x2, y2);
-					if (destinationValide)
+					LectureCoordonnees( "Destination [x y]: ", &l2, &c2);
+					destinationValide = VerifieCoordonnees(&plateau, l2, c2);
+					if (!destinationValide)
 					{
-						deplacementInvalide = ! VerifieDeplacement(&plateau, x1, y1, x2, y2);
-						origineValide = destinationValide = !deplacementInvalide;
+						destinationInvalide = true;
+						continue;
 					}
 
-				} while ( !(origineValide && destinationValide) );
+					// ---
 
-				LOG(ARGS, "(%d,%d) - (%d,%d)", x1, y1, x2, y2);
+					deplacementInvalide = !VerifieDeplacement(&plateau, l1, c1, l2, c2);
 
-				AddToQueue( &queue, CreeActionDeplacement( x1, y1, x2, y2 ) );
+				} while ( !origineValide || !destinationValide || deplacementInvalide );
+
+				LOG(ARGS, "(%d,%d) - (%d,%d) OK", l1, c1, l2, c2);
+
+				AddToQueue( &queue, CreeActionDeplacement( l1, c1, l2, c2 ) );
 
 				break;
 			}
+
+			// ---------------------------------------------------------------
+			// - DEPLACEMENT -------------------------------------------------
+			// ---------------------------------------------------------------
 
 			/*
 			 * Cette action va déclencher l’inversion des deux pions dont les
@@ -238,19 +309,22 @@ int main()
 
 				ActionDeplacement* actionDeplacement = (ActionDeplacement*)action;
 
-				int x1 = actionDeplacement->x1;
-				int y1 = actionDeplacement->y1;
-				int x2 = actionDeplacement->x2;
-				int y2 = actionDeplacement->y2;
-				LOG(ARGS, "(%d,%d) - (%d,%d)", x1, y1, x2, y2);
+				int l1 = actionDeplacement->l1;
+				int c1 = actionDeplacement->c1;
+				int l2 = actionDeplacement->l2;
+				int c2 = actionDeplacement->c2;
+				LOG(ARGS, "(%d,%d) - (%d,%d)", l1, c1, l2, c2);
 
-				Deplacement(&plateau, x1, y1, x2, y2);
+				Deplacement(&plateau, l1, c1, l2, c2);
 
 				AddToQueue(&queue, CreeActionCalcul());
 
-
 				break;
 			}
+
+			// ---------------------------------------------------------------
+			// - CALCUL ------------------------------------------------------
+			// ---------------------------------------------------------------
 
 			/*
 			 * Cette action doit être générée dès que l’action LECTURE est terminée.
@@ -274,10 +348,42 @@ int main()
 			{
 				LOG(ACTION, "CALCUL");
 
-				AddToQueue( &queue, CreeActionLecture() );
+				int c_l = 0;
+				int l1_c1 = 0;
+				int l2_c2 = 0;
+				int taille;
 
+				taille = VerifieColonnes(&plateau, &c_l, &l1_c1, &l2_c2 );
+				if (taille == 3)
+				{
+					AddToQueue(&queue, CreeActionSupressionV(c_l, l1_c1, l2_c2) );
+					break;
+				}
+				else if (taille > 3)
+				{
+					AddToQueue(&queue, CreeActionSupressionColonne(c_l) );
+					break;
+				}
+
+				taille = VerifieLignes(&plateau, &c_l, &l1_c1, &l2_c2);
+				if (taille == 3)
+				{
+					AddToQueue(&queue, CreeActionSupressionH(c_l, l1_c1, l2_c2));
+					break;
+				}
+				else if (taille > 3)
+				{
+					AddToQueue(&queue, CreeActionSupressionLigne(c_l));
+					break;
+				}
+
+				AddToQueue( &queue, CreeActionVerification() );
 				break;
 			}
+
+			// ---------------------------------------------------------------
+			// - VERIFICATION ------------------------------------------------
+			// ---------------------------------------------------------------
 
 			/*
 			 * - Il faut examiner la grille avec la gélatine en vue de vérifier s’il y
@@ -291,8 +397,27 @@ int main()
 			{
 				LOG(ACTION, "VERIFICATION");
 
+				if (!VerifieCoups(&plateau))
+				{
+					finJeu = true;
+					break;
+				}
+
+				if (!VerifieJellies(&plateau))
+				{
+					AddToQueue(&queue, CreeActionFinNiveau());
+				}
+				else
+				{
+					AddToQueue(&queue, CreeActionLecture());
+				}
+
 				break;
 			}
+
+			// ---------------------------------------------------------------
+			// - SUPRESSION_V ------------------------------------------------
+			// ---------------------------------------------------------------
 
 			/*
 			 * - Suppression des trois pions identifiés en position verticale
@@ -322,6 +447,10 @@ int main()
 				break;
 			}
 
+			// ---------------------------------------------------------------
+			// - SUPRESSION_H ------------------------------------------------
+			// ---------------------------------------------------------------
+
 			/*
 			 * - Suppression des trois pions identifiés en position horizontale
 			 * - Suppression des éventuelles gélatines
@@ -350,6 +479,10 @@ int main()
 				break;
 			}
 
+			// ---------------------------------------------------------------
+			// - SUPRESSION_COLONNE ------------------------------------------
+			// ---------------------------------------------------------------
+
 			case SUPRESSION_COLONNE:
 			{
 				LOG(ACTION, "SUPRESSION_COLONNE");
@@ -361,8 +494,14 @@ int main()
 
 				SuppressionColonne( &plateau, colonne );
 
+				AddToQueue(&queue, CreeActionCalcul());
+
 				break;
 			}
+
+			// ---------------------------------------------------------------
+			// - SUPRESSION_LIGNE --------------------------------------------
+			// ---------------------------------------------------------------
 
 			case SUPRESSION_LIGNE:
 			{
@@ -375,10 +514,16 @@ int main()
 
 				SuppressionLigne( &plateau, ligne );
 
+				AddToQueue(&queue, CreeActionCalcul());
+
 				break;
 			}
 
-			case FIN_NIVEAU:	// ---------------------------------------------
+			// ---------------------------------------------------------------
+			// - FIN_NIVEAU --------------------------------------------------
+			// ---------------------------------------------------------------
+
+			case FIN_NIVEAU:
 			{
 				LOG(ACTION, "FIN_NIVEAU");
 

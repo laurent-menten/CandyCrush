@@ -5,11 +5,15 @@
 
 #include <Windows.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <malloc.h>
 
 static ParametresNiveau* niveaux;
 static int niveauMax;
 
+/*
+ * initialize les paramètres du jeu 
+ */
 void InitialiseJeu(ParametresNiveau* _prototypesNiveau, int _niveauMax)
 {
 	LOG(INFO, "%s( %p, %d )", __func__, _prototypesNiveau, _niveauMax);
@@ -22,7 +26,7 @@ void InitialiseJeu(ParametresNiveau* _prototypesNiveau, int _niveauMax)
 }
 
 /*
- * L’initialisation de la Matrice qui doit recevoir la Matrice en paramètre 
+ * L’initialisation de la Matrice en fonction du niveau
  */
 
 int InitialisePlateau( Plateau* plateau, int niveau )
@@ -45,7 +49,7 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 	plateau->coups = niveaux[niveau - 1].coups;
 	plateau->jellies = niveaux[niveau - 1].jellies;
 
-	plateau->matrice = (Case*)malloc( plateau->colonnes * plateau->lignes * sizeof( Case ) );
+	plateau->matrice = (Case**)malloc( plateau->colonnes * plateau->lignes * sizeof( Case* ) );
 	if (!plateau->matrice)
 	{
 		AfficheErreur("Impossible d'allouer la mémoire pour le plateau");
@@ -54,35 +58,55 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 		return -1;
 	}
 
-	for( int l = 0; l < plateau->lignes; l++ )
+	for( int l = 1; l <= plateau->lignes; l++ )
 	{
-		for( int c = 0; c < plateau->colonnes; c++ )
+		for (int c = 1; c <= plateau->colonnes; c++)
 		{
-			plateau->matrice[(l * plateau->colonnes) + c].type = (enum TypePion) ((rand() % NB_TYPE_PION));
-			plateau->matrice[(l * plateau->colonnes) + c].jelly = false;
-			plateau->matrice[(l * plateau->colonnes) + c].vide = false;
+			Case* NewCase = CreeCaseAleatoire();
+			if (!NewCase)
+			{
+				AfficheErreur("Impossible d'allouer la mémoire pour la case (%d-%d) du plateau", l, c);
+
+				LOG(ERROR_FATAL, "Impossible d'allouer la mémoire pour la case (%d-%d) du plateau", l, c);
+				return -1;
+			}
+
+			plateau->matrice[GetNormalizedIndex(plateau,l,c)] = NewCase;
 		}
 	}
 
 	for( int j = 0; j < plateau->jellies; j++ )
 	{
-		int x;
-		int y;
+		int l;
+		int c;
 
 		do
 		{
-			x = (rand() + 1) % plateau->colonnes;
-			y = (rand() + 1) % plateau->lignes;
+			l = 1 + (rand() % plateau->colonnes);
+			c = 1 + (rand() % plateau->lignes);
 		}
-		while( plateau->matrice[(y * plateau->lignes) + x].jelly == true );
+		while( plateau->matrice[GetNormalizedIndex(plateau, l, c)]->jelly == true );
 
-		plateau->matrice[(y * plateau->lignes) + x].jelly = true;
+		plateau->matrice[GetNormalizedIndex(plateau, l, c)]->jelly = true;
 	} 
 
 	int rc = 0;
 	LOG(RET, "%d", rc);
 
 	return rc;
+}
+
+Case* CreeCaseAleatoire()
+{
+	Case* NewCase = (Case*)malloc(sizeof(Case));
+	if (NewCase)
+	{
+		NewCase->type = (enum TypePion)((rand() % NB_TYPE_PION));
+		NewCase->jelly = false;
+		NewCase->vide = false;
+	}
+
+	return NewCase;
 }
 
 /*
@@ -99,31 +123,39 @@ bool Verifie(Plateau* plateau)
 	return rc;
 }
 
-bool VerifieCoordonnees(Plateau* plateau, int x, int y)
+// true si OK
+bool VerifieCoordonnees(Plateau* plateau, int l, int c)
 {
-	LOG(INFO, "%s( %p, %d, %d )", __func__, plateau, x, y);
+	LOG(INFO, "%s( %p, %d, %d )", __func__, plateau, l, c);
 
-	bool rc = true;
+	bool rc =	((l >= 1) && (l <= plateau->colonnes))
+					&&
+				((c >= 1) && (c <= plateau->lignes));
+
 	LOG(RET, "%d", rc);
 
 	return rc;
 }
 
 // manque la vérification de l'environement de l'échange
+// mais ce n'est pas explicitment indiqué dans l'énoncé
 
-bool VerifieDeplacement(Plateau* plateau, int x1, int y1, int x2, int y2)
+// true si OK
+bool VerifieDeplacement(Plateau* plateau, int l1, int c1, int l2, int c2)
 {
-	LOG(INFO, "%s( %p, %d, %d, %d, %d )", __func__, plateau, x1, y1, x2, y2 );
+	LOG(INFO, "%s( %p, %d, %d, %d, %d )", __func__, plateau, l1, c1, l2, c2 );
 
-	int x = abs(x1 - x2);
-	int y = abs(y1 - y2);
+	int delta_l = abs(l1 - l2);
+	int delta_c = abs(c1 - c2);
 
-	bool rc = ((x == 0) && (y == 1)) || ((x == 1) && (y == 0));
+	bool rc = (delta_l + delta_c) == 1;
+
 	LOG(RET, "%d", rc);
 
 	return rc;
 }
 
+// true si encore des coups
 bool VerifieCoups(Plateau* plateau)
 {
 	LOG(INFO, "%s( %p )", __func__, plateau);
@@ -134,6 +166,7 @@ bool VerifieCoups(Plateau* plateau)
 	return rc;
 }
 
+// true si encore des jellies
 bool VerifieJellies(Plateau* plateau)
 {
 	LOG(INFO, "%s( %p )", __func__, plateau);
@@ -142,6 +175,96 @@ bool VerifieJellies(Plateau* plateau)
 	LOG(RET, "%d", rc);
 
 	return rc;
+}
+
+// retourne 0 si rien trouvé
+// le nombre de pions successifs et les infos si trouvé.
+int VerifieColonnes(Plateau* plateau, int* colonne, int* ligneDebut, int* ligneFin)
+{
+	int l;
+	int lz;
+	int c;
+
+	for (c = 1; c <= plateau->colonnes; c++)
+	{
+		Case* pionDebut = plateau->matrice[GetNormalizedIndex(plateau, 1, c)];
+
+		for (l = 1, lz = 1; l+lz < plateau->lignes; )
+		{
+			Case* pionFin = plateau->matrice[GetNormalizedIndex(plateau, l+lz, c)];
+
+//			AffichePlateau(plateau);
+//			printf("%d: %d +%d = %d\n", c, l, lz, l+lz);
+
+			if (!pionDebut->vide && (pionFin->type == pionDebut->type))
+			{
+				lz++;
+			}
+			else
+			{
+				if (lz > 2)
+				{
+					*colonne = c;
+					*ligneDebut = l;
+					*ligneFin = l + lz - 1;
+
+					return lz;
+				}
+
+				pionDebut = pionFin;
+				l += lz;
+				lz = 1;
+			}
+
+//			(void) getchar();
+		}
+	}
+
+	return 0;
+}
+
+int VerifieLignes(Plateau* plateau, int* ligne, int* colonneDebut, int* colonneFin)
+{
+	int l;
+	int c;
+	int cz;
+
+	for (l = 1; l <= plateau->lignes; l++)
+	{
+		Case* pionDebut = plateau->matrice[GetNormalizedIndex(plateau, l, 1)];
+
+		for (c = 1, cz = 1; c + cz < plateau->colonnes; )
+		{
+			Case* pionFin = plateau->matrice[GetNormalizedIndex(plateau, l, c + cz)];
+
+//			AffichePlateau(plateau);
+//			printf("%d: %d +%d = %d\n", l, c, cz, c+cz);
+
+			if (!pionDebut->vide && (pionFin->type == pionDebut->type))
+			{
+				cz++;
+			}
+			else
+			{
+				if (cz > 2)
+				{
+					*ligne = l;
+					*colonneDebut = c;
+					*colonneFin = c + cz - 1;
+
+					return cz;
+				}
+
+				pionDebut = pionFin;
+				c += cz;
+				cz = 1;
+			}
+
+//			(void) getchar();
+		}
+	}
+
+	return 0;
 }
 
 /*
@@ -165,9 +288,16 @@ Action* Calcul(Plateau* plateau)
  * Déplacement : Cette fonction reçoit en coordonnée les deux pions qui doivent être
  * intervertis. La fonction va effectivement les intervertir.
  */
-void Deplacement(Plateau* plateau, int x1, int y1, int x2, int y2)
+void Deplacement(Plateau* plateau, int l1, int c1, int l2, int c2)
 {
-	LOG(INFO, "%s( %p, %d, %d, %d, %d )", __func__, plateau, x1, y1, x2, y2);
+	LOG(INFO, "%s( %p, %d, %d, %d, %d )", __func__, plateau, l1, c1, l2, c2);
+
+	int i1 = GetNormalizedIndex(plateau, l1, c1);
+	int i2 = GetNormalizedIndex(plateau, l2, c2);
+
+	Case* tmp = plateau->matrice[i1];
+	plateau->matrice[i1] = plateau->matrice[i2];
+	plateau->matrice[i2] = tmp;
 }
 
 /*
@@ -182,6 +312,62 @@ void Deplacement(Plateau* plateau, int x1, int y1, int x2, int y2)
 void SuppressionVerticale(Plateau* plateau, int colonne, int ligneDebut, int ligneFin)
 {
 	LOG(INFO, "%s( %p, %d, %d, %d )", __func__, plateau, colonne, ligneDebut, ligneFin );
+
+	int l;
+	int l2;
+
+	// optimization pour une colonne complète
+
+	if (ligneDebut == 1 && ligneFin == plateau->lignes)
+	{
+		for (l = ligneDebut; l <= ligneFin; l++)
+		{
+			int i = GetNormalizedIndex(plateau, l, colonne);
+
+			if (plateau->matrice[i]->jelly)
+			{
+				plateau->jellies--;
+			}
+
+			free(plateau->matrice[i]);
+
+			plateau->matrice[i] = CreeCaseAleatoire();
+		}
+
+		return;
+	}
+
+	// supprime les pions de la ligne
+
+	for (l = ligneDebut; l <= ligneFin; l++)
+	{
+		int i = GetNormalizedIndex(plateau, l, colonne);
+
+		if (plateau->matrice[i]->jelly)
+		{
+			plateau->jellies--;
+		}
+
+		free(plateau->matrice[i]);
+	}
+
+	// déplace les pions vers le bas
+
+	for (l = ligneDebut, l2 = ligneFin + 1; l <= (plateau->lignes - (ligneFin - ligneDebut) - 1); l++, l2++ )
+	{
+		int i1 = GetNormalizedIndex(plateau, l, colonne);
+		int i2 = GetNormalizedIndex(plateau, l2, colonne);
+
+		plateau->matrice[i1] = plateau->matrice[i2];
+	}
+
+	// insère les nouveaux pions
+
+	for (l = (plateau->lignes - (ligneFin - ligneDebut) - 1) + 1; l < plateau->lignes; l++)
+	{
+		int i = GetNormalizedIndex(plateau, l, colonne);
+		plateau->matrice[i] = CreeCaseAleatoire();
+	}
 }
 
 /*
@@ -197,6 +383,11 @@ void SuppressionVerticale(Plateau* plateau, int colonne, int ligneDebut, int lig
 void SuppressionHorizontale(Plateau* plateau, int ligne, int colonneDebut, int colonneFin)
 {
 	LOG(INFO, "%s( %p, %d, %d, %d )", __func__, plateau, ligne, colonneDebut, colonneFin );
+
+	for (int c = colonneDebut; c <= colonneFin; c++)
+	{
+		SuppressionVerticale(plateau, c, ligne, ligne);
+	}
 }
 
 void SuppressionColonne(Plateau* plateau, int colonne)
