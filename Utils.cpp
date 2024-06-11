@@ -41,12 +41,12 @@ bool MaximizeConsole( void )
 
 //the function to read lines of variable length
 
-int readLineFromConsole(char* line)
+int readLineFromConsole(char* line, long InCapacity )
 {
 	int ch;             // as getchar() returns `int`
-	long capacity = 0;  // capacity of the buffer
+	long capacity = InCapacity;  // capacity of the buffer
 	long length = 0;    // maintains the length of the string
-	char* temp = NULL;  // use additional pointer to perform allocations in order to avoid memory leaks
+	char* temp = nullptr;  // use additional pointer to perform allocations in order to avoid memory leaks
 
 	while (((ch = getchar()) != '\n') && (ch != EOF))
 	{
@@ -57,6 +57,8 @@ int readLineFromConsole(char* line)
 				capacity = 2; // some initial fixed length 
 			else
 				capacity *= 2; // double the size
+
+			LOG(INFO, "Reallocation -> %d", capacity );
 
 			// try reallocating the memory
 			if ((temp = (char*)realloc(line, capacity * sizeof(char))) == NULL) //allocating memory
@@ -72,13 +74,18 @@ int readLineFromConsole(char* line)
 
 	line[length] = '\0'; //inserting null character at the end
 
-	// remove additionally allocated memory
-	if ((temp = (char*)realloc(line, (length + 1) * sizeof(char))) == NULL)
+	if( temp != nullptr  )
 	{
-		LOG(ERROR_FATAL, "Reallocation du buffer de chaine"); // noreturn
-	}
+		LOG(INFO, "Reallocation %d -> %d", capacity, (length + 1));
 
-	line = temp;
+		// remove additionally allocated memory
+		if ((temp = (char*)realloc(line, (length + 1) * sizeof(char))) == NULL)
+		{
+			LOG(ERROR_FATAL, "Reallocation du buffer de chaine"); // noreturn
+		}
+
+		line = temp;
+	}
 
 	return length;
 }

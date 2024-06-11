@@ -7,6 +7,8 @@
 #include <process.h>
 #include <stdio.h>
 
+#define BUFFER_SIZE 32
+
 /*
  * Fonction Lecture : fonction qui retourne les coordonnées ligne et colonne des deux
  * pions qui doivent être déplacés. 
@@ -15,7 +17,7 @@ bool LectureCoordonnees(const char* prompt, int* l, int* c)
 {
 	// Note: malloc nécessaire pour la fonction readLineFromConsole().
 
-	char* line = (char*)malloc(2);
+	char* line = (char*)malloc(BUFFER_SIZE);
 	if (!line)
 	{
 		return false;
@@ -30,7 +32,7 @@ bool LectureCoordonnees(const char* prompt, int* l, int* c)
 	{
 		printf( prompt );
 
-		rc = readLineFromConsole(line);
+		rc = readLineFromConsole(line, BUFFER_SIZE);
 
 		rc = sscanf_s( line, "%d %d", &inL, &inC);
 		if (rc != 2)
