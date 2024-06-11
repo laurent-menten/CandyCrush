@@ -61,24 +61,11 @@
  *   Le total de coups à jouer doit être affiché.
  */
 
-/*
- * PROBLEME DE GAMEPLAY...
- * 
- * Dans l'action CALCUL, le fait de vérifier toujours les colonnes avant les
- * lignes (ce serait la même chose si on verifie toujours les lignes
- * avant les colonnes) fait parfois disparaitre des alignements qui auraient
- * pu supprimer des gélatines. .
- * 
- * Solution à possible:
- * Partir de chaque pion, rendre vide les cases en alignement dans les 4 
- * directions puis tout faire tomber quand il n'y a plus aucun alignement.
- */
-
 // ****************************************************************************
 // * Configuration ************************************************************
 // ****************************************************************************
 
-static ParametresNiveau niveaux[]
+static ParametresNiveau parametresNiveaux[]
 {
 	{	10,			10,		1,		5 },
 
@@ -88,8 +75,8 @@ static ParametresNiveau niveaux[]
 	{	20,			20,		30,		20 },
 };
 
-// ***************************************************************************
-// *
+// ****************************************************************************
+// * Fonctions utilitaires ****************************************************
 // ****************************************************************************
 
 // Fonction de gestion des évènement liés à la fenêtre console.
@@ -102,6 +89,8 @@ BOOL WINAPI consoleHandler(_In_ DWORD signal )
 		AfficheAvertissement("Interception de Ctrl-C ...");
 
 		// Pour provoquer l'appel des fonctions enregistrée avec atexit();
+		// fermeture du log (si initialisé)
+		// liberation de la queue
 
 		exit(-1);
 	}
@@ -140,7 +129,7 @@ int main()
 
 	SetConsoleCtrlHandler((PHANDLER_ROUTINE)consoleHandler, TRUE);
 
-	// Appel automatique de la finalisation de que Queue lors de la sortie du
+	// Appel automatique de la finalisation de la Queue lors de la sortie du
 	// programme avec exit()
 
 	atexit( DeinitialiseQueue );
@@ -150,6 +139,7 @@ int main()
 	// ------------------------------------------------------------------------
 
 	Plateau plateau;
+
 	int niveau = 1;
 
 	// --- Console en plein écran (simule Alt-Enter) --------------------------
@@ -158,7 +148,7 @@ int main()
 
 	// --- Initialisation -----------------------------------------------------
 
-	InitialiseJeu(niveaux, (sizeof(niveaux) / sizeof(ParametresNiveau)));
+	InitialiseJeu(parametresNiveaux, (sizeof(parametresNiveaux) / sizeof(ParametresNiveau)));
 
 	InitializeQueue(&queue);
 
@@ -330,13 +320,13 @@ int main()
 
 				ActionDeplacement* actionDeplacement = (ActionDeplacement*)action;
 
-				int l1 = actionDeplacement->l1;
-				int c1 = actionDeplacement->c1;
-				int l2 = actionDeplacement->l2;
-				int c2 = actionDeplacement->c2;
-				LOG(ARGS, "(%d,%d) - (%d,%d)", l1, c1, l2, c2);
+				int ligneOrigine = actionDeplacement->ligneOrigine;
+				int colonneOrigine = actionDeplacement->colonneOrigine;
+				int ligneDestination = actionDeplacement->ligneDestination;
+				int colonneDestination = actionDeplacement->colonneDestination;
+				LOG(ARGS, "(%d,%d) - (%d,%d)", ligneOrigine, colonneOrigine, ligneDestination, colonneDestination);
 
-				Deplacement(&plateau, l1, c1, l2, c2);
+				Deplacement(&plateau, ligneOrigine, colonneOrigine, ligneDestination, colonneDestination);
 
 				AddToQueue(&queue, CreeActionCalcul());
 
@@ -371,6 +361,8 @@ int main()
 
 				AffichePlateau(&plateau);
 
+				// --- block "vertical"
+
 				{
 					int colonne = 0;
 					int ligneDebut = 0;
@@ -389,6 +381,8 @@ int main()
 						break;
 					}
 				}
+
+				// -- block "horizontal"
 
 				{
 					int ligne;
@@ -444,6 +438,8 @@ int main()
 
 				if (!VerifieJellies(&plateau))
 				{
+					AffichePlateau(&plateau);
+
 					printf("Bravo...\n");
 					printf("Pressez une touche\n");
 					(void) getchar();
@@ -481,7 +477,7 @@ int main()
 				int colonne = actionSupression->index;
 				int ligneDebut = actionSupression->debut;
 				int ligneFin = actionSupression->fin;
-				LOG(ARGS, "c:%d %d-%d", colonne, ligneDebut, ligneFin);
+				LOG(ARGS, "colonne: %d lignes: %d-%d", colonne, ligneDebut, ligneFin);
 
 				SuppressionVerticale( &plateau, colonne, ligneDebut, ligneFin );
 
@@ -513,7 +509,7 @@ int main()
 				int ligne = actionSupression->index;
 				int colonneDebut = actionSupression->debut;
 				int colonneFin = actionSupression->fin;
-				LOG(ARGS, "l:%d %d-%d", ligne, colonneDebut, colonneFin);
+				LOG(ARGS, "ligne: %d colonnes: %d-%d", ligne, colonneDebut, colonneFin);
 
 				SuppressionHorizontale( &plateau, ligne, colonneDebut, colonneFin );
 
@@ -533,7 +529,7 @@ int main()
 				ActionSupressionColonne* actionSupression = (ActionSupressionColonne*)action;
 
 				int colonne = actionSupression->index;
-				LOG(ARGS, "c:%d", colonne );
+				LOG(ARGS, "colonne: %d", colonne );
 
 				SuppressionColonne( &plateau, colonne );
 
@@ -553,7 +549,7 @@ int main()
 				ActionSupressionLigne* actionSupression = (ActionSupressionLigne*)action;
 
 				int ligne = actionSupression->index;
-				LOG(ARGS, "l:%d", ligne);
+				LOG(ARGS, "ligne: %d", ligne);
 
 				SuppressionLigne( &plateau, ligne );
 
@@ -572,6 +568,8 @@ int main()
 
 				if (++niveau <= 3)
 				{
+					LOG(ARGS, "niveau: %d", niveau);
+
 					AddToQueue(&queue, CreeActionInitialize());
 				}
 				else
@@ -588,7 +586,7 @@ int main()
 
 			default:
 			{
-				AfficheErreur("Action de type %d non gérée", action->type);
+				AfficheErreur("Action de type %d non geree", action->type);
 
 				LOG(ERROR_FATAL, "Action inconnue: %d", action->type); // noreturn
 			}

@@ -134,41 +134,41 @@ void AffichePlateau( Plateau* plateau, bool avecInfos )
 }
 
 
-void AfficheMessage(const char* error, ...)
+void AfficheMessage(const char* message, ...)
 {
 	printf("\n");
 	printf("\b\033[32;1mINFO: \033[0m"); // Vert
 
-	va_list errorArgs;
-	va_start(errorArgs, error);
-	vprintf(error, errorArgs);
-	va_end(errorArgs);
+	va_list vargs;
+	va_start(vargs, message);
+	vprintf(message, vargs);
+	va_end(vargs);
 
 	printf("\n");
 }
 
-void AfficheAvertissement(const char* error, ...)
+void AfficheAvertissement(const char* messageAvertissement, ...)
 {
 	printf("\n");
 	printf("\b\033[33;1mATTENTION: \033[0m"); // Jaune
  
-	va_list errorArgs;
-	va_start(errorArgs, error);
-	vprintf(error, errorArgs);
-	va_end(errorArgs);
+	va_list vargs;
+	va_start(vargs, messageAvertissement);
+	vprintf(messageAvertissement, vargs);
+	va_end(vargs);
 
 	printf("\n");
 }
 
-void AfficheErreur( const char* error, ... )
+void AfficheErreur( const char* messageErreur, ... )
 {
 	printf("\n");
 	printf("\b\033[31;1mERREUR: \033[0m"); // Rouge
 
-	va_list errorArgs;
-	va_start(errorArgs, error);
-	vprintf( error, errorArgs );
-	va_end(errorArgs);
+	va_list vargs;
+	va_start(vargs, messageErreur);
+	vprintf( messageErreur, vargs );
+	va_end(vargs);
 
 	printf("\n");
 }

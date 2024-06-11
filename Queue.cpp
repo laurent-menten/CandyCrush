@@ -1,5 +1,6 @@
 
 #include "Queue.h"
+#include "Log.h"
 #include "Affichage.h"
 
 #include <stdlib.h>
@@ -18,9 +19,7 @@ int InitializeQueue( ActionQueue* queue, size_t size )
 	queue->actions = (Action**) malloc( size * sizeof( Action* ) );
 	if( queue->actions == nullptr )
 	{
-		AfficheErreur( "Allocation mémoire pour le tableau d'actions de la queue" );
-
-		return -1;
+		LOG(ERROR_FATAL, "Allocation mémoire pour le tableau d'actions de la queue" ); // noreturn
 	}
 
 	return 0;
@@ -45,8 +44,7 @@ int AddToQueue( ActionQueue* queue, Action* action )
 {
 	if( QueuePleine( queue ) )
 	{
-		AfficheErreur( "La queue est pleine" );
-		return -1;
+		LOG(ERROR_FATAL, "La queue est pleine" ); // noreturn
 	}
 
 

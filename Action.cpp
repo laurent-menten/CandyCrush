@@ -5,7 +5,7 @@
 #include <malloc.h>
 
 // ============================================================================
-// =
+// === Fonctions de construction des différents types d'actions ===============
 // ============================================================================
 
 Action* CreeActionInitialize()
@@ -60,10 +60,11 @@ Action* CreeActionDeplacement(int x1, int y1, int x2, int y2)
 	}
 
 	action->action.type = DEPLACEMENT;
-	action->l1 = x1;
-	action->c1 = y1;
-	action->l2 = x2;
-	action->c2 = y2;
+
+	action->ligneOrigine = x1;
+	action->colonneOrigine = y1;
+	action->ligneDestination = x2;
+	action->colonneDestination = y2;
 
 	return (Action*)action;
 
@@ -107,6 +108,7 @@ Action* CreeActionSupressionV(int colonne, int ligneDebut, int ligneFin)
 	}
 
 	action->action.type = SUPRESSION_V;
+
 	action->index = colonne;
 	action->debut = ligneDebut;
 	action->fin = ligneFin;
@@ -124,6 +126,7 @@ Action* CreeActionSupressionH(int ligne, int colonneDebut, int colonneFin)
 	}
 
 	action->action.type = SUPRESSION_H;
+
 	action->index = ligne;
 	action->debut = colonneDebut;
 	action->fin = colonneFin;
@@ -141,6 +144,7 @@ Action* CreeActionSupressionColonne(int colonne)
 	}
 
 	action->action.type = SUPRESSION_COLONNE;
+
 	action->index = colonne;
 
 	return (Action*)action;
@@ -156,6 +160,7 @@ Action* CreeActionSupressionLigne(int ligne)
 	}
 
 	action->action.type = SUPRESSION_LIGNE;
+
 	action->index = ligne;
 
 	return (Action*)action;

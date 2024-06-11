@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <malloc.h>
 
-static ParametresNiveau* niveaux;
+static ParametresNiveau* parametresNiveaux;
 static int niveauMax;
 
 /*
@@ -18,7 +18,7 @@ void InitialiseJeu(ParametresNiveau* _prototypesNiveau, int _niveauMax)
 {
 	LOG(INFO, "%s( %p, %d )", __func__, _prototypesNiveau, _niveauMax);
 
-	niveaux = _prototypesNiveau;
+	parametresNiveaux = _prototypesNiveau;
 	niveauMax = _niveauMax;
 
 	// pour éviter que rand() ne donne toujours les mêmes valeurs.
@@ -46,14 +46,14 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 
 	plateau->niveau = niveau;
 
-	plateau->colonnes = niveaux[niveau - 1].colonnes;
-	plateau->lignes = niveaux[niveau - 1].lignes;
+	plateau->colonnes = parametresNiveaux[niveau - 1].colonnes;
+	plateau->lignes = parametresNiveaux[niveau - 1].lignes;
 
-	plateau->coups = niveaux[niveau - 1].coups;
-	plateau->coupsMax = niveaux[niveau - 1].coups;
+	plateau->coups = parametresNiveaux[niveau - 1].coups;
+	plateau->coupsMax = parametresNiveaux[niveau - 1].coups;
 
-	plateau->jellies = niveaux[niveau - 1].jellies;
-	plateau->jelliesMax = niveaux[niveau - 1].jellies;
+	plateau->jellies = parametresNiveaux[niveau - 1].jellies;
+	plateau->jelliesMax = parametresNiveaux[niveau - 1].jellies;
 
 	plateau->matrice = (Case**)malloc( plateau->colonnes * plateau->lignes * sizeof( Case* ) );
 	if (!plateau->matrice)
@@ -95,20 +95,6 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 
 		plateau->matrice[GetNormalizedIndex(plateau, l, c)]->jelly = true;
 	} 
-
-#ifdef _DEBUG
-	plateau->matrice[GetNormalizedIndex(plateau, 1, plateau->colonnes-3)]->type = BLEU;
-	plateau->matrice[GetNormalizedIndex(plateau, 1, plateau->colonnes-2)]->type = BLEU;
-	plateau->matrice[GetNormalizedIndex(plateau, 1, plateau->colonnes-1)]->type = BLEU;
-	plateau->matrice[GetNormalizedIndex(plateau, 1, plateau->colonnes-0)]->type = BLEU;
-
-	plateau->matrice[GetNormalizedIndex(plateau, plateau->lignes-3, 1)]->type = BLEU;
-	plateau->matrice[GetNormalizedIndex(plateau, plateau->lignes-2, 1)]->type = BLEU;
-	plateau->matrice[GetNormalizedIndex(plateau, plateau->lignes-1, 1)]->type = BLEU;
-	plateau->matrice[GetNormalizedIndex(plateau, plateau->lignes-0, 1)]->type = BLEU;
-
-	AffichePlateau(plateau);
-#endif
 
 	int rc = 0;
 	LOG(RET, "%d", rc);

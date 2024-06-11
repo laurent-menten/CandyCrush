@@ -1,7 +1,7 @@
 #pragma once
 
 // ============================================================================
-// === 
+// === Types d'actions ========================================================
 // ============================================================================
 
 enum ActionType
@@ -20,7 +20,7 @@ enum ActionType
 };
 
 // ============================================================================
-// === 
+// === Structure des différents types d'actions ===============================
 // ============================================================================
 
 // La structure de base Action ne contient que le type de l'action. Cette
@@ -30,7 +30,7 @@ enum ActionType
 // structure contenant en premier la structure de base puis les données. Ainsi
 // un pointeur vers nimporte laquelle de ces structures permettra toujours
 // d'accéder au type et il suffira de faire un cast du pointeur vers le
-// type de structure adéquat pour obtenir les données.
+// type de structure adéquat pour obtenir les données supplémentaires.
 //
 // ex:
 //	Action* action = GetFromQueue();
@@ -51,10 +51,10 @@ typedef struct ActionDeplacement
 {
 	Action action;
 
-	int l1;
-	int c1;
-	int l2;
-	int c2;
+	int ligneOrigine;
+	int colonneOrigine;
+	int ligneDestination;
+	int colonneDestination;
 
 } ActionDeplacement;
 
@@ -77,7 +77,7 @@ typedef struct ActionSupressionColonneLigne
 } ActionSupressionColonne, ActionSupressionLigne;
 
 // ============================================================================
-// === 
+// === Fonctions de construction des différents types d'actions ===============
 // ============================================================================
 
 Action* CreeActionInitialize();

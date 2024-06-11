@@ -1,4 +1,7 @@
-#include <Windows.h>
+#include "Utils.h"
+#include "Log.h"
+
+#include <windows.h>
 #include <stdio.h>
 
 // Simulate Alt-Enter input
@@ -58,9 +61,7 @@ int readLineFromConsole(char* line)
 			// try reallocating the memory
 			if ((temp = (char*)realloc(line, capacity * sizeof(char))) == NULL) //allocating memory
 			{
-				printf("ERROR: unsuccessful allocation");
-				// return line; or you can exit
-				exit(1);
+				LOG(ERROR_FATAL, "Reallocation du buffer de chaine"); // noreturn
 			}
 
 			line = temp;
@@ -74,9 +75,7 @@ int readLineFromConsole(char* line)
 	// remove additionally allocated memory
 	if ((temp = (char*)realloc(line, (length + 1) * sizeof(char))) == NULL)
 	{
-		printf("ERROR: unsuccessful allocation");
-		// return line; or you can exit
-		exit(1);
+		LOG(ERROR_FATAL, "Reallocation du buffer de chaine"); // noreturn
 	}
 
 	line = temp;

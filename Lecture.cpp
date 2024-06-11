@@ -11,9 +11,16 @@
  * Fonction Lecture : fonction qui retourne les coordonnées ligne et colonne des deux
  * pions qui doivent être déplacés. 
  */
-bool LectureCoordonnees( const char* prompt, int* l, int* c)
+bool LectureCoordonnees(const char* prompt, int* l, int* c)
 {
-	char* line = (char*)malloc(100);
+	// Note: malloc nécessaire pour la fonction readLineFromConsole().
+
+	char* line = (char*)malloc(2);
+	if (!line)
+	{
+		return false;
+	}
+
 
 	int inL = 0;
 	int inC = 0;
@@ -30,10 +37,13 @@ bool LectureCoordonnees( const char* prompt, int* l, int* c)
 		{
 			AfficheAvertissement("Format d'entree invalide");
 		}
-	} while (rc != 2);
+	}
+	while (rc != 2);
 
 	*l = inL;
 	*c = inC;
+
+	free(line);
 
 	return true;
 }
