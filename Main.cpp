@@ -67,8 +67,6 @@
 
 static ParametresNiveau parametresNiveaux[]
 {
-	{	10,			10,		1,		5 },
-
 	//	colonnes	lignes	coups	jellies
 	{	20,			20,		40,		10 },
 	{	20,			20,		35,		15 },
@@ -361,50 +359,8 @@ int main()
 
 				AffichePlateau(&plateau);
 
-				// --- block "vertical"
+				AddToQueue(&queue, Calcul(&plateau) );
 
-				{
-					int colonne = 0;
-					int ligneDebut = 0;
-					int ligneFin = 0;
-					int taille;
-
-					taille = VerifieColonnes(&plateau, &colonne, &ligneDebut, &ligneFin);
-					if (taille == 3)
-					{
-						AddToQueue(&queue, CreeActionSupressionV(colonne, ligneDebut, ligneFin));
-						break;
-					}
-					else if (taille > 3)
-					{
-						AddToQueue(&queue, CreeActionSupressionColonne(colonne));
-						break;
-					}
-				}
-
-				// -- block "horizontal"
-
-				{
-					int ligne;
-					int colonneDebut = 0;
-					int colonneFin = 0;
-					int taille;
-
-					taille = VerifieLignes(&plateau, &ligne, &colonneDebut, &colonneFin);
-					if (taille == 3)
-					{
-						AddToQueue(&queue, CreeActionSupressionH(ligne, colonneDebut, colonneFin));
-						break;
-					}
-					else if (taille > 3)
-					{
-						AddToQueue(&queue, CreeActionSupressionLigne(ligne));
-						break;
-					}
-
-				}
-
-				AddToQueue( &queue, CreeActionVerification() );
 				break;
 			}
 
@@ -566,7 +522,7 @@ int main()
 			{
 				LOG(ACTION, "FIN_NIVEAU");
 
-				if (++niveau <= 3)
+				if (++niveau <= (sizeof(parametresNiveaux) / sizeof(ParametresNiveau)))
 				{
 					LOG(ARGS, "niveau: %d", niveau);
 

@@ -41,6 +41,7 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 
 	if (niveau > 1)
 	{
+		// free des cases
 		free(plateau->matrice);
 	}
 
@@ -60,8 +61,7 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 	{
 		AfficheErreur("Impossible d'allouer la mémoire pour le plateau");
 
-		LOG(ERROR_FATAL, "Impossible d'allouer la mémoire pour le plateau");
-		return -1;
+		LOG(ERROR_FATAL, "Impossible d'allouer la mémoire pour le plateau"); // noreturn
 	}
 
 	for( int l = 1; l <= plateau->lignes; l++ )
@@ -73,8 +73,7 @@ int InitialisePlateau( Plateau* plateau, int niveau )
 			{
 				AfficheErreur("Impossible d'allouer la mémoire pour la case (%d-%d) du plateau", l, c);
 
-				LOG(ERROR_FATAL, "Impossible d'allouer la mémoire pour la case (%d-%d) du plateau", l, c);
-				return -1;
+				LOG(ERROR_FATAL, "Impossible d'allouer la mémoire pour la case (%d-%d) du plateau", l, c); // noreturn
 			}
 
 			plateau->matrice[GetNormalizedIndex(plateau,l,c)] = NewCase;
@@ -113,20 +112,6 @@ Case* CreeCaseAleatoire()
 	}
 
 	return NewCase;
-}
-
-/*
- * Vérification : calcule si oui ou non l’utilisateur a gagné. Le joueur
- * a gagné s’il ne reste plus aucune gélatine.
- */
-bool Verifie(Plateau* plateau)
-{
-	LOG(INFO, "%s( %p )", __func__, plateau);
-
-	bool rc = true;
-	LOG(RET, "%d", rc);
-
-	return rc;
 }
 
 // true si OK
@@ -279,15 +264,61 @@ int VerifieLignes(Plateau* plateau, int* ligne, int* colonneDebut, int* colonneF
  * suivent en vertical, la fonction devra ajouter une action « Suppression V » sur la
  * Queue. Si trois pions se suivent en horizontal, alors il faut ajouter une action
  * « Suppression H » sur la Queue.
- * 
-  *Si la Queue est pleine, il faut afficher un message d’erreur et arrêter le programme.
  */
 Action* Calcul(Plateau* plateau)
 {
 	LOG(INFO, "%s( %p )", __func__, plateau);
 
-	LOG(RET, "nullptr");
-	return nullptr;
+	// --- block "vertical"
+
+	{
+		int colonne = 0;
+		int ligneDebut = 0;
+		int ligneFin = 0;
+		int taille;
+
+		taille = VerifieColonnes(plateau, &colonne, &ligneDebut, &ligneFin);
+		if (taille == 3)
+		{
+			LOG( RET, "colonne: %d, lignes: %d-%d", colonne, ligneDebut, ligneFin );
+
+			return CreeActionSupressionV(colonne, ligneDebut, ligneFin);
+		}
+		else if (taille > 3)
+		{
+			LOG(RET, "colonne: %d", colonne, ligneDebut, ligneFin);
+
+			return CreeActionSupressionColonne(colonne) ;
+		}
+	}
+
+	// -- block "horizontal"
+
+	{
+		int ligne;
+		int colonneDebut = 0;
+		int colonneFin = 0;
+		int taille;
+
+		taille = VerifieLignes(plateau, &ligne, &colonneDebut, &colonneFin);
+		if (taille == 3)
+		{
+			LOG(RET, "ligne: %d, colonnes: %d-%d", ligne, colonneDebut, colonneFin);
+
+			return CreeActionSupressionH(ligne, colonneDebut, colonneFin);
+		}
+		else if (taille > 3)
+		{
+			LOG(RET, "ligne: %d", ligne );
+
+			return CreeActionSupressionLigne(ligne);
+		}
+
+	}
+
+	LOG(RET, "verification");
+
+	return CreeActionVerification();
 }
 
 /*

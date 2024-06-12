@@ -86,7 +86,7 @@ Action* CreeActionLecture();
 Action* CreeActionDeplacement(int x1, int y1, int x2, int y2);
 Action* CreeActionCalcul();
 Action* CreeActionVerification();
-Action* CreeActionSupressionV(int collone, int ligneDebut, int ligneFin);
+Action* CreeActionSupressionV(int colonne, int ligneDebut, int ligneFin);
 Action* CreeActionSupressionH(int ligne, int colloneDebut, int colloneFin);
 Action* CreeActionSupressionColonne(int collone);
 Action* CreeActionSupressionLigne(int ligne);

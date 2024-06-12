@@ -1,0 +1,166 @@
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[19] InitialiseJeu() I: InitialiseJeu( 00007FF67A304000, 4 )
+1 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[179] main() *: INITIALIZATION
+2 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[35] InitialisePlateau() I: InitialisePlateau( 00000034852FF168, 1 )
+3 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[100] InitialisePlateau()   =: 0
+4 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+5 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[473] main() *: SUPRESSION_V
+6 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[480] main()   --->: colonne: 3 lignes: 6-8
+7 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 3, 6, 8 )
+8 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+9 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[473] main() *: SUPRESSION_V
+10 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[480] main()   --->: colonne: 5 lignes: 6-8
+11 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 5, 6, 8 )
+12 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+13 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[505] main() *: SUPRESSION_H
+14 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[512] main()   --->: ligne: 1 colonnes: 3-5
+15 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[398] SuppressionHorizontale() I: SuppressionHorizontale( 00000034852FF168, 1, 3, 5 )
+16 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 3, 1, 1 )
+17 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 4, 1, 1 )
+18 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 5, 1, 1 )
+19 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+20 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[505] main() *: SUPRESSION_H
+21 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[512] main()   --->: ligne: 1 colonnes: 6-8
+22 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[398] SuppressionHorizontale() I: SuppressionHorizontale( 00000034852FF168, 1, 6, 8 )
+23 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 6, 1, 1 )
+24 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 7, 1, 1 )
+25 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 8, 1, 1 )
+26 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+27 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[505] main() *: SUPRESSION_H
+28 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[512] main()   --->: ligne: 10 colonnes: 5-7
+29 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[398] SuppressionHorizontale() I: SuppressionHorizontale( 00000034852FF168, 10, 5, 7 )
+30 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 5, 10, 10 )
+31 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 6, 10, 10 )
+32 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 7, 10, 10 )
+33 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+34 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[547] main() *: SUPRESSION_LIGNE
+35 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[552] main()   --->: ligne: 10
+36 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[415] SuppressionLigne() I: SuppressionLigne( 00000034852FF168, 10 )
+37 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[398] SuppressionHorizontale() I: SuppressionHorizontale( 00000034852FF168, 10, 1, 10 )
+38 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 1, 10, 10 )
+39 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 2, 10, 10 )
+40 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 3, 10, 10 )
+41 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 4, 10, 10 )
+42 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 5, 10, 10 )
+43 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 6, 10, 10 )
+44 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 7, 10, 10 )
+45 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 8, 10, 10 )
+46 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 9, 10, 10 )
+47 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[323] SuppressionVerticale() I: SuppressionVerticale( 00000034852FF168, 10, 10, 10 )
+48 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+49 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[427] main() *: VERIFICATION
+50 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[167] VerifieCoups() I: VerifieCoups( 00000034852FF168 )
+51 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[170] VerifieCoups()   =: 1
+52 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[178] VerifieJellies() I: VerifieJellies( 00000034852FF168 )
+53 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[181] VerifieJellies()   =: 1
+54 2024-06-12 18:12:25: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[228] main() *: LECTURE
+55 2024-06-12 18:12:40: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[135] VerifieCoordonnees() I: VerifieCoordonnees( 00000034852FF168, 1, 2 )
+56 2024-06-12 18:12:40: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[141] VerifieCoordonnees()   =: 1
+57 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[135] VerifieCoordonnees() I: VerifieCoordonnees( 00000034852FF168, 1, 3 )
+58 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[141] VerifieCoordonnees()   =: 1
+59 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[152] VerifieDeplacement() I: VerifieDeplacement( 00000034852FF168, 1, 2, 1, 3 )
+60 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[159] VerifieDeplacement()   =: 1
+61 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[300] main()   --->: (1,2) - (1,3) OK
+62 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[319] main() *: DEPLACEMENT
+63 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[327] main()   --->: (1,2) - (1,3)
+64 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[299] Deplacement() I: Deplacement( 00000034852FF168, 1, 2, 1, 3 )
+65 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+66 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[427] main() *: VERIFICATION
+67 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[167] VerifieCoups() I: VerifieCoups( 00000034852FF168 )
+68 2024-06-12 18:12:44: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[170] VerifieCoups()   =: 0
+ --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+0 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[19] InitialiseJeu() I: InitialiseJeu( 00007FF74B7F4000, 4 )
+1 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[179] main() *: INITIALIZATION
+2 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[35] InitialisePlateau() I: InitialisePlateau( 0000007AFE4FF268, 1 )
+3 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[99] InitialisePlateau()   =: 0
+4 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+5 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+6 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[283] Calcul()   =: colonne: 3, lignes: 8-10
+7 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[431] main() *: SUPRESSION_V
+8 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[438] main()   --->: colonne: 3 lignes: 8-10
+9 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 3, 8, 10 )
+10 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+11 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+12 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[283] Calcul()   =: colonne: 3, lignes: 7-9
+13 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[431] main() *: SUPRESSION_V
+14 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[438] main()   --->: colonne: 3 lignes: 7-9
+15 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 3, 7, 9 )
+16 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+17 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+18 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[283] Calcul()   =: colonne: 9, lignes: 6-8
+19 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[431] main() *: SUPRESSION_V
+20 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[438] main()   --->: colonne: 9 lignes: 6-8
+21 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 9, 6, 8 )
+22 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+23 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+24 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[306] Calcul()   =: ligne: 1, colonnes: 6-8
+25 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[463] main() *: SUPRESSION_H
+26 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[470] main()   --->: ligne: 1 colonnes: 6-8
+27 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[429] SuppressionHorizontale() I: SuppressionHorizontale( 0000007AFE4FF268, 1, 6, 8 )
+28 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 6, 1, 1 )
+29 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 7, 1, 1 )
+30 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 8, 1, 1 )
+31 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+32 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+33 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[283] Calcul()   =: colonne: 8, lignes: 8-10
+34 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[431] main() *: SUPRESSION_V
+35 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[438] main()   --->: colonne: 8 lignes: 8-10
+36 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 8, 8, 10 )
+37 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+38 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+39 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[306] Calcul()   =: ligne: 4, colonnes: 6-8
+40 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[463] main() *: SUPRESSION_H
+41 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[470] main()   --->: ligne: 4 colonnes: 6-8
+42 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[429] SuppressionHorizontale() I: SuppressionHorizontale( 0000007AFE4FF268, 4, 6, 8 )
+43 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 6, 4, 4 )
+44 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 7, 4, 4 )
+45 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 8, 4, 4 )
+46 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+47 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+48 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[306] Calcul()   =: ligne: 8, colonnes: 3-5
+49 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[463] main() *: SUPRESSION_H
+50 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[470] main()   --->: ligne: 8 colonnes: 3-5
+51 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[429] SuppressionHorizontale() I: SuppressionHorizontale( 0000007AFE4FF268, 8, 3, 5 )
+52 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 3, 8, 8 )
+53 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 4, 8, 8 )
+54 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 5, 8, 8 )
+55 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+56 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+57 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[306] Calcul()   =: ligne: 9, colonnes: 7-9
+58 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[463] main() *: SUPRESSION_H
+59 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[470] main()   --->: ligne: 9 colonnes: 7-9
+60 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[429] SuppressionHorizontale() I: SuppressionHorizontale( 0000007AFE4FF268, 9, 7, 9 )
+61 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 7, 9, 9 )
+62 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 8, 9, 9 )
+63 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 9, 9, 9 )
+64 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+65 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+66 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[283] Calcul()   =: colonne: 8, lignes: 8-10
+67 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[431] main() *: SUPRESSION_V
+68 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[438] main()   --->: colonne: 8 lignes: 8-10
+69 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[354] SuppressionVerticale() I: SuppressionVerticale( 0000007AFE4FF268, 8, 8, 10 )
+70 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+71 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+72 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[319] Calcul()   =: verification
+73 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[385] main() *: VERIFICATION
+74 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[152] VerifieCoups() I: VerifieCoups( 0000007AFE4FF268 )
+75 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[155] VerifieCoups()   =: 1
+76 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[163] VerifieJellies() I: VerifieJellies( 0000007AFE4FF268 )
+77 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[166] VerifieJellies()   =: 1
+78 2024-06-12 20:21:18: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[228] main() *: LECTURE
+79 2024-06-12 20:21:29: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[120] VerifieCoordonnees() I: VerifieCoordonnees( 0000007AFE4FF268, 1, 1 )
+80 2024-06-12 20:21:29: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[126] VerifieCoordonnees()   =: 1
+81 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[120] VerifieCoordonnees() I: VerifieCoordonnees( 0000007AFE4FF268, 1, 2 )
+82 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[126] VerifieCoordonnees()   =: 1
+83 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[137] VerifieDeplacement() I: VerifieDeplacement( 0000007AFE4FF268, 1, 1, 1, 2 )
+84 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[144] VerifieDeplacement()   =: 1
+85 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[300] main()   --->: (1,1) - (1,2) OK
+86 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[319] main() *: DEPLACEMENT
+87 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[327] main()   --->: (1,1) - (1,2)
+88 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[330] Deplacement() I: Deplacement( 0000007AFE4FF268, 1, 1, 1, 2 )
+89 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[360] main() *: CALCUL
+90 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[270] Calcul() I: Calcul( 0000007AFE4FF268 )
+91 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[319] Calcul()   =: verification
+92 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Main.cpp[385] main() *: VERIFICATION
+93 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[152] VerifieCoups() I: VerifieCoups( 0000007AFE4FF268 )
+94 2024-06-12 20:21:30: D:\Documents\Sources\Cxx\CandyCrush\Matrice.cpp[155] VerifieCoups()   =: 0
